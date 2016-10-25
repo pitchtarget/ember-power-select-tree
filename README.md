@@ -1,6 +1,6 @@
 # Ember-power-select-tree
 
-This README outlines the details of collaborating on this Ember addon.
+[WORK IN PROGRESS] Navigable tree structure add-on for ember-power-select
 
 ## Installation
 

@@ -1,0 +1,14 @@
+{{#power-select
+  options=currentOptions
+  selected=selected
+  closeOnSelect=false
+  onchange=(action "onToggleGroup")
+  optionsComponent=(component 'tree-options' onToggleGroup=(action 'onToggleGroup'))
+  searchEnabled=false
+  as |nodeOrLeaf|
+}}
+  {{nodeOrLeaf.label}}
+  {{#if nodeOrLeaf.isSelectable}}
+    {{input type='checkbox'}}
+  {{/if}}
+{{/power-select}}

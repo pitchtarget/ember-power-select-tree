@@ -1,0 +1,49 @@
+{{#each options as |opt index|}}
+  {{#if opt.nodeName}}
+    <li class="ember-power-select-group" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="option">
+      <span class="ember-power-select-group-name" {{action 'onToggleGroup' opt}}>
+        {{#if opt.isCollapsed}}
+          >
+        {{else}}
+          \/
+        {{/if}}
+        {{opt.nodeName}}
+      </span>
+      {{#unless opt.isCollapsed}}
+        {{#tree-options
+          options=(readonly opt.options)
+          select=(readonly select)
+          groupIndex=(concat groupIndex index ".")
+          optionsComponent=(readonly optionsComponent)
+          role="group"
+          onToggleGroup=(action 'onToggleGroup')
+          class="ember-power-select-options" as |option|}}
+            {{yield option select}}
+        {{/tree-options}}
+      {{/unless}}
+    </li>
+  {{else}}
+    <li class="ember-power-select-option"
+      aria-selected="{{ember-power-select-is-selected opt select.selected}}"
+      aria-disabled={{ember-power-select-true-string-if-present opt.disabled}}
+      aria-current="{{eq opt select.highlighted}}"
+      data-option-index="{{groupIndex}}{{index}}"
+      role="option">
+      {{yield opt select}}
+    </li>
+  {{/if}}
+
+
+
+  {{!--
+  {{log opt}}
+  <li class="ember-power-select-option"
+    aria-selected="{{ember-power-select-is-selected opt select.selected}}"
+    aria-disabled={{ember-power-select-true-string-if-present opt.disabled}}
+    aria-current="{{eq opt select.highlighted}}"
+    data-option-index="{{groupIndex}}{{index}}"
+    role='option'>
+    {{yield opt select}}
+  </li>
+  --}}
+{{/each}}
