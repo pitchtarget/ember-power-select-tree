@@ -17,7 +17,7 @@
   },
   "author": {"name": "Pitchtarget"},
   "contributors": [
-    {"name": "William Bergamo", "email": "william@pitchtarget.com"}
+    {"name": "William Bergamo", "email": "william@pitchtarget.com"},
     {"name": "Matteo Centenaro", "email": "matteo@pitchtarget.com"}
   ],
   "license": "MIT",
@@ -43,6 +43,7 @@
     "loader.js": "^4.0.10"
   },
   "keywords": [
+    "ember-addon",
     "ember-power-select",
     "browsable tree",
     "tree"
