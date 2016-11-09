@@ -3,12 +3,15 @@
   selected=selected
   closeOnSelect=false
   onchange=(action "onToggleGroup")
-  optionsComponent=(component 'tree-options' onToggleGroup=(action 'onToggleGroup'))
   searchEnabled=false
-  as |nodeOrLeaf|
-}}
-  {{nodeOrLeaf.label}}
-  {{#if nodeOrLeaf.isSelectable}}
-    {{input type='checkbox'}}
+  optionsComponent=(component 'tree-options'
+    onToggleGroup=(action 'onToggleGroup')
+    handleChecked=(action 'handleChecked')
+  ) as |leaf| }}
+
+  {{leaf.label}}
+  {{#if leaf.isSelectable}}
+    {{input type='checkbox' change=(action 'handleChecked' leaf)}}
   {{/if}}
+
 {{/power-select}}
