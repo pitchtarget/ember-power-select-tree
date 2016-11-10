@@ -4,16 +4,17 @@ const { get, set, computed, A, Component } = Ember;
 
 export default Component.extend({
   layout,
-  currentOptions: computed('treeOptions', 'selectedOptions', function() {
+  currentOptions: computed('treeOptions.[]'/*, 'selectedOptions.[]'*/, function() {
     const component = this;
     const treeOptions = get(component, 'treeOptions');
-    // const selectedOptions = get(component, 'selectedOptions');
-    return this._buildPath(treeOptions.map(component._collapsableOption.bind(component)));
-      // TODO filter
-      // .filter(() => {
-      //
-      // });
+    // const selectedOptions = A(get(component, 'selectedOptions'));
+    return this._buildPath(
+      treeOptions
+        .map(component._collapsableOption.bind(component))
+    );
   }),
+
+  // TODO: property that groups selectedOptions by path
 
   _buildPath(treeOptions, currPath = []) {
     treeOptions.forEach(o => {
@@ -23,6 +24,7 @@ export default Component.extend({
 
       currPath.push(o.nodeName);
       this._buildPath(get(o, 'options'), currPath);
+      currPath = [];
     });
     return treeOptions;
   },
@@ -30,15 +32,17 @@ export default Component.extend({
   _collapsableOption(opt) {
     const component = this;
     const isSelectable = get(opt, 'isSelectable');
+    const isChecked = get(opt, 'isChecked');
     const groupName = get(opt, 'groupName');
     const options = get(opt, 'options') || [];
     const isCollapsed = get(opt, 'isCollapsed') || true;
     if (groupName) {
       return {
-        nodeName: groupName,
-        options: options.map(component._collapsableOption.bind(component)),
         isSelectable,
         isCollapsed,
+        isChecked,
+        nodeName: groupName,
+        options: options.map(component._collapsableOption.bind(component))
       };
     }
 
@@ -59,15 +63,33 @@ export default Component.extend({
       if (nodeOrLeaf.nodeName) {
         return set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
       }
-      selectedOptions.pushObject(nodeOrLeaf);
+
+      const isLeafChecked = get(nodeOrLeaf, 'isChecked');
+      if (isLeafChecked) {
+        selectedOptions.removeObject(nodeOrLeaf);
+      } else {
+        selectedOptions.pushObject(nodeOrLeaf);
+      }
+      set(nodeOrLeaf, 'isChecked', !isLeafChecked);
       set(this, 'selectedOptions', selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
+      const newVal = !get(nodeOrLeaf, 'isChecked');
+      set(nodeOrLeaf, 'isChecked', newVal);
+
       const selectedOptions = A(get(this, 'selectedOptions'));
       if (nodeOrLeaf.nodeName) {
-        selectedOptions.pushObjects(this._getLeaves(nodeOrLeaf));
+        if (!newVal) {
+          selectedOptions.removeObjects(this._getLeaves(nodeOrLeaf));
+        } else {
+          selectedOptions.pushObjects(this._getLeaves(nodeOrLeaf));
+        }
       } else {
-        selectedOptions.pushObject(nodeOrLeaf);
+        if (!newVal) {
+          selectedOptions.removeObject(nodeOrLeaf);
+        } else {
+          selectedOptions.pushObject(nodeOrLeaf);
+        }
       }
       set(this, 'selectedOptions', selectedOptions);
     }

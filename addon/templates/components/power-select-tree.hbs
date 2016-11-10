@@ -8,6 +8,7 @@
 {{#power-select
   options=currentOptions
   selected=selected
+  renderInPlace=true
   closeOnSelect=false
   onchange=(action "onToggleGroup")
   searchEnabled=false
@@ -16,8 +17,10 @@
     handleChecked=(action 'handleChecked')
   ) as |leaf| }}
 
-  {{leaf.label}}
+  <span {{action 'onToggleGroup' leaf}}>
+    {{leaf.label}}
+  </span>
   {{#if leaf.isSelectable}}
-    {{input type='checkbox' change=(action 'handleChecked' leaf)}}
+    {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
   {{/if}}
 {{/power-select}}
