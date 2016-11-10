@@ -7,6 +7,7 @@ export default Component.extend({
   layout,
   currentOptions: computed('treeOptions.[]'/*, 'selectedOptions.[]'*/, function() {
     // TODO check selected items
+    // TODO if all leaf of a tree are selected check the parent node
     const treeOptions = get(this, 'treeOptions');
     // const selectedOptions = A(get(this, 'selectedOptions'));
     return this._buildPath(
@@ -14,6 +15,12 @@ export default Component.extend({
     );
   }),
 
+  // old code
+  // init() {
+  //   this._super(...arguments);
+  //   set(this, 'currentOptions', get(this, 'treeOptions').map(o => this._collapsableOption(o)));
+  //   // TODO if all leaf of a tree are selected check the parent node
+  // }
   // TODO: property that groups selectedOptions by path
 
   _buildPath(treeOptions, currPath = []) {
