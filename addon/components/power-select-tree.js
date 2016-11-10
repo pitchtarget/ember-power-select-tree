@@ -57,6 +57,14 @@ export default Component.extend({
     return leaves;
   },
 
+  _traverseTree(root, func) {
+    func(root);
+    const options = A(get(root, 'options'));
+    if (options.length) {
+      options.forEach(o => this._traverseTree(o, func));
+    }
+  },
+
   actions: {
     onToggleGroup(nodeOrLeaf) {
       const selectedOptions = A(get(this, 'selectedOptions'));
@@ -75,10 +83,11 @@ export default Component.extend({
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
-      set(nodeOrLeaf, 'isChecked', newVal);
+      const setChecked = node => set(node, 'isChecked', newVal);
 
       const selectedOptions = A(get(this, 'selectedOptions'));
       if (nodeOrLeaf.nodeName) {
+        this._traverseTree(nodeOrLeaf, setChecked);
         if (!newVal) {
           selectedOptions.removeObjects(this._getLeaves(nodeOrLeaf));
         } else {
