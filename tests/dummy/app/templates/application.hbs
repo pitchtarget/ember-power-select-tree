@@ -4,3 +4,10 @@
   as |option|}}
   {{option}}
 {{/power-select-tree}}
+
+APPLICATION SELECTED:
+<p>
+  {{#each selectedOptions as |opt|}}
+    {{opt.label}}
+  {{/each}}
+</p>

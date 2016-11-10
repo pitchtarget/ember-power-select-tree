@@ -1,3 +1,4 @@
+/* jshint expr: true */
 import Ember from 'ember';
 import layout from '../templates/components/power-select-tree';
 const { get, set, computed, A, Component } = Ember;
@@ -5,12 +6,11 @@ const { get, set, computed, A, Component } = Ember;
 export default Component.extend({
   layout,
   currentOptions: computed('treeOptions.[]'/*, 'selectedOptions.[]'*/, function() {
-    const component = this;
-    const treeOptions = get(component, 'treeOptions');
-    // const selectedOptions = A(get(component, 'selectedOptions'));
+    // TODO check selected items
+    const treeOptions = get(this, 'treeOptions');
+    // const selectedOptions = A(get(this, 'selectedOptions'));
     return this._buildPath(
-      treeOptions
-        .map(component._collapsableOption.bind(component))
+      treeOptions.map(o => this._collapsableOption(o/*, selectedOptions*/))
     );
   }),
 
@@ -29,10 +29,9 @@ export default Component.extend({
     return treeOptions;
   },
 
-  _collapsableOption(opt) {
-    const component = this;
+  _collapsableOption(opt/*, selectedOptions = A()*/) {
     const isSelectable = get(opt, 'isSelectable');
-    const isChecked = get(opt, 'isChecked');
+    const isChecked = get(opt, 'isChecked')/* || selectedOptions.isAny('key', get(opt, 'key'))*/;
     const groupName = get(opt, 'groupName');
     const options = get(opt, 'options') || [];
     const isCollapsed = get(opt, 'isCollapsed') || true;
@@ -42,7 +41,7 @@ export default Component.extend({
         isCollapsed,
         isChecked,
         nodeName: groupName,
-        options: options.map(component._collapsableOption.bind(component))
+        options: options.map(o => this._collapsableOption(o/*, selectedOptions*/))
       };
     }
 
@@ -84,21 +83,17 @@ export default Component.extend({
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
       const setChecked = node => set(node, 'isChecked', newVal);
-
       const selectedOptions = A(get(this, 'selectedOptions'));
+      this._traverseTree(nodeOrLeaf, setChecked);
       if (nodeOrLeaf.nodeName) {
-        this._traverseTree(nodeOrLeaf, setChecked);
-        if (!newVal) {
-          selectedOptions.removeObjects(this._getLeaves(nodeOrLeaf));
-        } else {
-          selectedOptions.pushObjects(this._getLeaves(nodeOrLeaf));
-        }
+        const leaves = this._getLeaves(nodeOrLeaf);
+        !newVal ?
+          selectedOptions.removeObjects(leaves) :
+          selectedOptions.pushObjects(leaves);
       } else {
-        if (!newVal) {
-          selectedOptions.removeObject(nodeOrLeaf);
-        } else {
+        !newVal ?
+          selectedOptions.removeObject(nodeOrLeaf) :
           selectedOptions.pushObject(nodeOrLeaf);
-        }
       }
       set(this, 'selectedOptions', selectedOptions);
     }
