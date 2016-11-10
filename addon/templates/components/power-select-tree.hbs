@@ -1,3 +1,10 @@
+{{#each selectedOptions as |opt|}}
+  <div>
+    <b>{{opt.path}}</b>
+    {{opt.label}}
+  </div>
+{{/each}}
+
 {{#power-select
   options=currentOptions
   selected=selected
@@ -13,5 +20,4 @@
   {{#if leaf.isSelectable}}
     {{input type='checkbox' change=(action 'handleChecked' leaf)}}
   {{/if}}
-
 {{/power-select}}

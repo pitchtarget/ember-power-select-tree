@@ -28,7 +28,7 @@
       aria-disabled={{ember-power-select-true-string-if-present opt.disabled}}
       aria-current="{{eq opt select.highlighted}}"
       data-option-index="{{groupIndex}}{{index}}"
-      role="option">
+      role="option" {{action 'onToggleGroup' opt}}>
       {{yield opt select}}
     </li>
   {{/if}}
