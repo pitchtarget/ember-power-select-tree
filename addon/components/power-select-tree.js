@@ -15,8 +15,8 @@ export default Component.extend({
       .map(o => this._buildPath(o));
   }),
 
-  selectedOptionsWithPath: computed('selectedOptions', function() {
-    return get(this, 'selectedOptions').map(o => this._buildPath(o));
+  selectedOptionsWithPath: computed('selectedOptions.[]', function() {
+    return A(get(this, 'selectedOptions')).map(o => this._buildPath(o));
   }),
 
   // old code
@@ -29,14 +29,15 @@ export default Component.extend({
 
   _buildPath(node, currPath = []) {
     if (!get(node, 'nodeName')) {
-      return set(node, 'path', currPath.join(' > '));
+      set(node, 'path', currPath.join(' > '));
+    } else {
+      currPath.push(node.nodeName);
+      get(node, 'options').forEach(o => {
+        this._buildPath(o, currPath);
+      });
+      currPath = [];
     }
 
-    currPath.push(node.nodeName);
-    get(node, 'options').forEach(o => {
-      this._buildPath(o, currPath);
-    });
-    currPath = [];
     return node;
   },
 
