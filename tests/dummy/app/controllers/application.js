@@ -2,9 +2,9 @@ import Ember from 'ember';
 const { Controller } = Ember;
 
 export default Controller.extend({
-  // selectedOptions: [{
-  //   key: 1, label: 'one'
-  // }],
+  selectedOptions: [{
+    key: 1, label: 'one'
+  }],
   treeOptions: [{
     groupName: 'Interests',
     isSelectable: true,

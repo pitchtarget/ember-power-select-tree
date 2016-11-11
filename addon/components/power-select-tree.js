@@ -5,26 +5,27 @@ const { get, set, computed, A, Component } = Ember;
 
 export default Component.extend({
   layout,
-  currentOptions: computed('treeOptions.[]'/*, 'selectedOptions.[]'*/, function() {
-    // TODO check selected items
+  currentOptions: computed('treeOptions.[]', function() {
     // TODO if all leaf of a tree are selected check the parent node
     const treeOptions = get(this, 'treeOptions');
-    // const selectedOptions = A(get(this, 'selectedOptions'));
     return treeOptions
-      .map(o => this._collapsableOption(o/*, selectedOptions*/))
+      .map(o => this._collapsableOption(o))
       .map(o => this._buildPath(o));
   }),
 
-  selectedOptionsWithPath: computed('selectedOptions.[]', function() {
-    return A(get(this, 'selectedOptions')).map(o => this._buildPath(o));
-  }),
+  __selectedOptions: computed('selectedOptions.[]', 'currentOptions.[]', function() {
+    const newOpts = A();
+    const setPath = o => {
+      if (A(get(this, 'selectedOptions')).isAny('key', get(o, 'key'))) {
+        set(o, 'path', get(o, 'path'));
+        set(o, 'isChecked', true);
+        newOpts.pushObject(o);
+      }
+    };
 
-  // old code
-  // init() {
-  //   this._super(...arguments);
-  //   set(this, 'currentOptions', get(this, 'treeOptions').map(o => this._collapsableOption(o)));
-  //   // TODO if all leaf of a tree are selected check the parent node
-  // }
+    A(get(this, 'currentOptions')).forEach(o => this._traverseTree(o, setPath));
+    return newOpts;
+  }),
   // TODO: property that groups selectedOptions by path
 
   _buildPath(node, currPath = []) {
@@ -32,18 +33,16 @@ export default Component.extend({
       set(node, 'path', currPath.join(' > '));
     } else {
       currPath.push(node.nodeName);
-      get(node, 'options').forEach(o => {
-        this._buildPath(o, currPath);
-      });
+      get(node, 'options').forEach(o => this._buildPath(o, currPath));
       currPath = [];
     }
 
     return node;
   },
 
-  _collapsableOption(opt/*, selectedOptions = A()*/) {
+  _collapsableOption(opt) {
     const isSelectable = get(opt, 'isSelectable');
-    const isChecked = get(opt, 'isChecked')/* || selectedOptions.isAny('key', get(opt, 'key'))*/;
+    const isChecked = get(opt, 'isChecked');
     const groupName = get(opt, 'groupName');
     const options = get(opt, 'options') || [];
     const isCollapsed = get(opt, 'isCollapsed') || true;
@@ -53,7 +52,7 @@ export default Component.extend({
         isCollapsed,
         isChecked,
         nodeName: groupName,
-        options: options.map(o => this._collapsableOption(o/*, selectedOptions*/))
+        options: options.map(o => this._collapsableOption(o))
       };
     }
 
@@ -62,7 +61,7 @@ export default Component.extend({
   },
 
   _getLeaves(root, leaves = A()) {
-    get(root, 'options').forEach(
+    (get(root, 'options') || A()).forEach(
       o => !o.nodeName ? leaves.pushObject(o) : this._getLeaves(o, leaves)
     );
     return leaves;
@@ -96,15 +95,17 @@ export default Component.extend({
       const newVal = !get(nodeOrLeaf, 'isChecked');
       const setChecked = node => set(node, 'isChecked', newVal);
       const selectedOptions = A(get(this, 'selectedOptions'));
+      const leaves = this._getLeaves(nodeOrLeaf);
+
       this._traverseTree(nodeOrLeaf, setChecked);
+
       if (nodeOrLeaf.nodeName) {
-        const leaves = this._getLeaves(nodeOrLeaf);
         !newVal ?
           selectedOptions.removeObjects(leaves) :
           selectedOptions.pushObjects(leaves);
       } else {
         !newVal ?
-          selectedOptions.removeObject(nodeOrLeaf) :
+          selectedOptions.removeObject(nodeOrLeaf) : // TODO is not removed beacuse object now has 'path'
           selectedOptions.pushObject(nodeOrLeaf);
       }
       set(this, 'selectedOptions', selectedOptions);
