@@ -10,9 +10,13 @@ export default Component.extend({
     // TODO if all leaf of a tree are selected check the parent node
     const treeOptions = get(this, 'treeOptions');
     // const selectedOptions = A(get(this, 'selectedOptions'));
-    return this._buildPath(
-      treeOptions.map(o => this._collapsableOption(o/*, selectedOptions*/))
-    );
+    return treeOptions
+      .map(o => this._collapsableOption(o/*, selectedOptions*/))
+      .map(o => this._buildPath(o));
+  }),
+
+  selectedOptionsWithPath: computed('selectedOptions', function() {
+    return get(this, 'selectedOptions').map(o => this._buildPath(o));
   }),
 
   // old code
@@ -23,17 +27,17 @@ export default Component.extend({
   // }
   // TODO: property that groups selectedOptions by path
 
-  _buildPath(treeOptions, currPath = []) {
-    treeOptions.forEach(o => {
-      if (!o.nodeName) {
-        return set(o, 'path', currPath.join(' > '));
-      }
+  _buildPath(node, currPath = []) {
+    if (!get(node, 'nodeName')) {
+      return set(node, 'path', currPath.join(' > '));
+    }
 
-      currPath.push(o.nodeName);
-      this._buildPath(get(o, 'options'), currPath);
-      currPath = [];
+    currPath.push(node.nodeName);
+    get(node, 'options').forEach(o => {
+      this._buildPath(o, currPath);
     });
-    return treeOptions;
+    currPath = [];
+    return node;
   },
 
   _collapsableOption(opt/*, selectedOptions = A()*/) {
