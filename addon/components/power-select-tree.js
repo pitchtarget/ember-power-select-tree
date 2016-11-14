@@ -8,6 +8,7 @@ export default Component.extend({
   __selectedOptions: null,
   currentOptions: computed('treeOptions.[]', function() {
     // TODO if all leaf of a tree are selected check the parent node
+    // TODO highlight also parent node not leaf only
     const treeOptions = get(this, 'treeOptions');
     return treeOptions
       .map(o => this._collapsableOption(o))
@@ -15,8 +16,17 @@ export default Component.extend({
   }),
 
   groupedSelectedOptions: computed('__selectedOptions.[]', function() {
-    // TODO: property that groups selectedOptions by path
-    // return A(get(this, '__selectedOptions'))
+    return A(get(this, '__selectedOptions')).reduce((prev, curr) => {
+      const path = get(curr, 'path');
+      const group = prev.findBy('path', path);
+      if (group) {
+        get(group, 'options').pushObject(curr);
+      } else {
+        prev.pushObject({path, options: A([curr])});
+      }
+
+      return prev;
+    }, A()).sortBy('path');
   }),
 
   init() {

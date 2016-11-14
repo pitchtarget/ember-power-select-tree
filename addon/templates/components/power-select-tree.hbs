@@ -1,8 +1,10 @@
-{{#each __selectedOptions as |opt|}}
-  <div>
-    <b>{{opt.path}}</b>
-    {{opt.label}}
-  </div>
+{{#each groupedSelectedOptions as |opt|}}
+  <b>{{opt.path}}</b>
+  {{#each opt.options as |o|}}
+    <div>
+      {{o.label}}
+    </div>
+  {{/each}}
 {{/each}}
 
 {{#power-select
