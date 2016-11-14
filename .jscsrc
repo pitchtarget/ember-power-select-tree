@@ -1,0 +1,14 @@
+{
+  "preset": "ember-suave",
+  "requireBlocksOnNewline": 1,
+  "requireArrayDestructuring": false,
+  "requireCommaBeforeLineBreak": false,
+  "requireObjectDestructuring": false,
+  "disallowDirectPropertyAccess": false,
+  "requireSpread": false,
+  "requireSpacesInsideObjectBrackets": false,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+  "disallowConstOutsideModuleScope": false,
+  "requireParenthesesAroundArrowParam": false,
+  "maximumLineLength": { "value": 120, "allExcept": [ "functionSignature", "urlComments" ] }
+}
