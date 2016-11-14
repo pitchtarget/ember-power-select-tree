@@ -1,7 +1,7 @@
 /* jshint expr: true */
 import Ember from 'ember';
 import layout from '../templates/components/power-select-tree';
-const { get, set, computed, A, Component } = Ember;
+const { get, set, isBlank, computed, A, Component } = Ember;
 
 export default Component.extend({
   layout,
@@ -13,20 +13,35 @@ export default Component.extend({
       .map(o => this._buildPath(o));
   }),
 
-  __selectedOptions: computed('selectedOptions.[]', 'currentOptions.[]', function() {
+  groupedSelectedOptions: computed('__selectedOptions.[]', function() {
+    // TODO: property that groups selectedOptions by path
+    // return A(get(this, '__selectedOptions'))
+  }),
+
+  init() {
+    this._super(...arguments);
+
+    if (isBlank(get(this, 'selectedOptions'))) {
+      set(this, '__selectedOptions', A());
+    } else {
+      this._buildSelectedOptions();
+    }
+  },
+
+  _buildSelectedOptions() {
     const newOpts = A();
     const setPath = o => {
       if (A(get(this, 'selectedOptions')).isAny('key', get(o, 'key'))) {
         set(o, 'path', get(o, 'path'));
         set(o, 'isChecked', true);
-        newOpts.pushObject(o);
+        newOpts.pushObject(Object.assign({}, o));
       }
     };
 
+    // Check selected items
     A(get(this, 'currentOptions')).forEach(o => this._traverseTree(o, setPath));
-    return newOpts;
-  }),
-  // TODO: property that groups selectedOptions by path
+    set(this, '__selectedOptions', newOpts);
+  },
 
   _buildPath(node, currPath = []) {
     if (!get(node, 'nodeName')) {
@@ -75,13 +90,13 @@ export default Component.extend({
     }
   },
 
-  // onTreeSelectionChange() {
-  //   return get(this, 'onTreeSelectionChange')(get(this, '__selectedOptions'));
-  // },
+  onTreeSelectionChange(opts = get(this, '__selectedOptions')) {
+    return get(this, 'onTreeSelectionChange')(opts);
+  },
 
   actions: {
     onToggleGroup(nodeOrLeaf) {
-      const selectedOptions = A(get(this, 'selectedOptions'));
+      const __selectedOptions = A(get(this, '__selectedOptions'));
       const nodeKey = get(nodeOrLeaf, 'key');
       if (nodeOrLeaf.nodeName) {
         return set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
@@ -89,18 +104,19 @@ export default Component.extend({
 
       const isLeafChecked = get(nodeOrLeaf, 'isChecked');
       if (isLeafChecked) {
-        selectedOptions.removeObject(selectedOptions.findBy('key', nodeKey));
+        __selectedOptions.removeObject(__selectedOptions.findBy('key', nodeKey));
       } else {
-        selectedOptions.pushObject(nodeOrLeaf);
+        __selectedOptions.pushObject(nodeOrLeaf);
       }
       set(nodeOrLeaf, 'isChecked', !isLeafChecked);
-      // this.onTreeSelectionChange();
-      set(this, 'selectedOptions', selectedOptions);
+
+      set(this, '__selectedOptions', __selectedOptions);
+      this.onTreeSelectionChange();
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
       const setChecked = node => set(node, 'isChecked', newVal);
-      const selectedOptions = A(get(this, 'selectedOptions'));
+      const __selectedOptions = A(get(this, '__selectedOptions'));
       const nodeKey = get(nodeOrLeaf, 'key');
       const leaves = this._getLeaves(nodeOrLeaf);
 
@@ -108,15 +124,16 @@ export default Component.extend({
 
       if (nodeOrLeaf.nodeName) {
         !newVal ?
-          leaves.forEach(l => selectedOptions.removeObject(selectedOptions.findBy('key', get(l, 'key')))) :
-          selectedOptions.pushObjects(leaves);
+          leaves.forEach(l => __selectedOptions.removeObject(__selectedOptions.findBy('key', get(l, 'key')))) :
+          __selectedOptions.pushObjects(leaves);
       } else {
         !newVal ?
-          selectedOptions.removeObject(selectedOptions.findBy('key', nodeKey)) :
-          selectedOptions.pushObject(nodeOrLeaf);
+          __selectedOptions.removeObject(__selectedOptions.findBy('key', nodeKey)) :
+          __selectedOptions.pushObject(nodeOrLeaf);
       }
-      // this.onTreeSelectionChange();
-      set(this, 'selectedOptions', selectedOptions);
+
+      set(this, '__selectedOptions', __selectedOptions);
+      this.onTreeSelectionChange();
     }
   }
 });

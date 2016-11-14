@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const { Controller } = Ember;
+const { set, Controller } = Ember;
 
 export default Controller.extend({
   selectedOptions: [{
@@ -25,5 +25,10 @@ export default Controller.extend({
       ],
       isSelectable: true
     }
-  ]
+  ],
+  actions: {
+    onTreeSelectionChange(selected) {
+      set(this, 'selectedOptions', selected);
+    }
+  }
 });
