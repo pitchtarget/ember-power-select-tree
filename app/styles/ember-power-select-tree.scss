@@ -1,0 +1,7 @@
+@import "variables";
+@import "ember-power-select";
+
+.ember-power-select-tree-list {
+  max-height: $ember-power-select-tree-list-max-height;
+  overflow: auto
+}
