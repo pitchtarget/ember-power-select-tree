@@ -5,6 +5,7 @@ const { get, set, isBlank, computed, A, Component } = Ember;
 
 export default Component.extend({
   layout,
+  __selectedOptions: null,
   currentOptions: computed('treeOptions.[]', function() {
     // TODO if all leaf of a tree are selected check the parent node
     const treeOptions = get(this, 'treeOptions');
@@ -34,7 +35,7 @@ export default Component.extend({
       if (A(get(this, 'selectedOptions')).isAny('key', get(o, 'key'))) {
         set(o, 'path', get(o, 'path'));
         set(o, 'isChecked', true);
-        newOpts.pushObject(Object.assign({}, o));
+        newOpts.pushObject(o);
       }
     };
 
@@ -98,6 +99,7 @@ export default Component.extend({
     onToggleGroup(nodeOrLeaf) {
       const __selectedOptions = A(get(this, '__selectedOptions'));
       const nodeKey = get(nodeOrLeaf, 'key');
+
       if (nodeOrLeaf.nodeName) {
         return set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
       }
@@ -108,8 +110,8 @@ export default Component.extend({
       } else {
         __selectedOptions.pushObject(nodeOrLeaf);
       }
-      set(nodeOrLeaf, 'isChecked', !isLeafChecked);
 
+      set(nodeOrLeaf, 'isChecked', !isLeafChecked);
       set(this, '__selectedOptions', __selectedOptions);
       this.onTreeSelectionChange();
     },
@@ -117,6 +119,7 @@ export default Component.extend({
       const newVal = !get(nodeOrLeaf, 'isChecked');
       const setChecked = node => set(node, 'isChecked', newVal);
       const __selectedOptions = A(get(this, '__selectedOptions'));
+      const __selectedOptionsKeys = __selectedOptions.map(o => get(o, 'key'));
       const nodeKey = get(nodeOrLeaf, 'key');
       const leaves = this._getLeaves(nodeOrLeaf);
 
@@ -125,7 +128,7 @@ export default Component.extend({
       if (nodeOrLeaf.nodeName) {
         !newVal ?
           leaves.forEach(l => __selectedOptions.removeObject(__selectedOptions.findBy('key', get(l, 'key')))) :
-          __selectedOptions.pushObjects(leaves);
+          __selectedOptions.pushObjects(leaves.filter(l => !__selectedOptionsKeys.includes(get(l, 'key'))));
       } else {
         !newVal ?
           __selectedOptions.removeObject(__selectedOptions.findBy('key', nodeKey)) :
