@@ -75,39 +75,47 @@ export default Component.extend({
     }
   },
 
+  // onTreeSelectionChange() {
+  //   return get(this, 'onTreeSelectionChange')(get(this, '__selectedOptions'));
+  // },
+
   actions: {
     onToggleGroup(nodeOrLeaf) {
       const selectedOptions = A(get(this, 'selectedOptions'));
+      const nodeKey = get(nodeOrLeaf, 'key');
       if (nodeOrLeaf.nodeName) {
         return set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
       }
 
       const isLeafChecked = get(nodeOrLeaf, 'isChecked');
       if (isLeafChecked) {
-        selectedOptions.removeObject(nodeOrLeaf);
+        selectedOptions.removeObject(selectedOptions.findBy('key', nodeKey));
       } else {
         selectedOptions.pushObject(nodeOrLeaf);
       }
       set(nodeOrLeaf, 'isChecked', !isLeafChecked);
+      // this.onTreeSelectionChange();
       set(this, 'selectedOptions', selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
       const setChecked = node => set(node, 'isChecked', newVal);
       const selectedOptions = A(get(this, 'selectedOptions'));
+      const nodeKey = get(nodeOrLeaf, 'key');
       const leaves = this._getLeaves(nodeOrLeaf);
 
       this._traverseTree(nodeOrLeaf, setChecked);
 
       if (nodeOrLeaf.nodeName) {
         !newVal ?
-          selectedOptions.removeObjects(leaves) :
+          leaves.forEach(l => selectedOptions.removeObject(selectedOptions.findBy('key', get(l, 'key')))) :
           selectedOptions.pushObjects(leaves);
       } else {
         !newVal ?
-          selectedOptions.removeObject(nodeOrLeaf) : // TODO is not removed beacuse object now has 'path'
+          selectedOptions.removeObject(selectedOptions.findBy('key', nodeKey)) :
           selectedOptions.pushObject(nodeOrLeaf);
       }
+      // this.onTreeSelectionChange();
       set(this, 'selectedOptions', selectedOptions);
     }
   }
