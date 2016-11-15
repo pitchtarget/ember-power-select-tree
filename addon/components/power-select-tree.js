@@ -6,22 +6,16 @@ const { get, set, isBlank, computed, A, Component } = Ember;
 export default Component.extend({
   layout,
   __selectedOptions: null,
-  _advancedTreeOptions: computed('treeOptions.[]', function() {
+  advancedTreeOptions: computed('treeOptions.[]', function() {
     return get(this, 'treeOptions')
       .map(o => this._collapsableOption(o))
       .map(o => this._buildPath(o));
   }),
-  currentOptions: computed('_advancedTreeOptions.[]', '__selectedOptions.[]', function() {
+  currentOptions: computed('advancedTreeOptions.[]', '__selectedOptions.[]', function() {
     const __selectedOptions = get(this, '__selectedOptions');
-    return get(this, '_advancedTreeOptions')
-      .map(o => this._traverseTree(o, (node) => this.setChecked(node, __selectedOptions)));
+    return get(this, 'advancedTreeOptions')
+      .map(o => this._traverseTree(o, (node) => this._setChecked(node, __selectedOptions)));
   }),
-
-  setChecked(o, __selectedOptions) {
-    if (A(__selectedOptions).isAny('key', get(o, 'key'))) {
-      set(o, 'isChecked', true);
-    }
-  },
 
   groupedSelectedOptions: computed('__selectedOptions.[]', function() {
     return A(get(this, '__selectedOptions')).reduce((prev, curr) => {
@@ -40,15 +34,19 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const selectedOptions = get(this, 'selectedOptions') || A();
-    let leaves = get(this, 'currentOptions')
-      .map(o => this._collapsableOption(o))
-      .map(o => this._buildPath(o))
-      .map(o => this._traverseTree(o, (node) => this.setChecked(node, selectedOptions)))
+    const selectedOptions = A(get(this, 'selectedOptions'));
+    let leaves = get(this, 'advancedTreeOptions')
+      .map(o => this._traverseTree(o, (node) => this._setChecked(node, selectedOptions)))
       .map(o => this._getLeaves(o));
 
     set(this, '__selectedOptions', isBlank(selectedOptions) ? A() :
       [].concat(...leaves).filter(l => selectedOptions.isAny('key', get(l, 'key'))));
+  },
+
+  _setChecked(o, __selectedOptions) {
+    if (A(__selectedOptions).isAny('key', get(o, 'key'))) {
+      set(o, 'isChecked', true);
+    }
   },
 
   _buildPath(node, currPath = A()) {
@@ -126,13 +124,13 @@ export default Component.extend({
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
-      const setChecked = node => set(node, 'isChecked', newVal);
+      const _setChecked = node => set(node, 'isChecked', newVal);
       const __selectedOptions = A(get(this, '__selectedOptions'));
       const __selectedOptionsKeys = __selectedOptions.map(o => get(o, 'key'));
       const nodeKey = get(nodeOrLeaf, 'key');
       const leaves = this._getLeaves(nodeOrLeaf);
 
-      this._traverseTree(nodeOrLeaf, setChecked);
+      this._traverseTree(nodeOrLeaf, _setChecked);
 
       if (nodeOrLeaf.nodeName) {
         !newVal ?
