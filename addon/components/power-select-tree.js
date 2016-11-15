@@ -98,7 +98,7 @@ export default Component.extend({
     return root;
   },
 
-  onTreeSelectionChange(opts = get(this, '__selectedOptions')) {
+  onTreeSelectionChange(opts) {
     return get(this, 'onTreeSelectionChange')(opts);
   },
 
@@ -120,7 +120,7 @@ export default Component.extend({
 
       set(nodeOrLeaf, 'isChecked', !isLeafChecked);
       set(this, '__selectedOptions', __selectedOptions);
-      this.onTreeSelectionChange();
+      this.onTreeSelectionChange(__selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
@@ -143,7 +143,7 @@ export default Component.extend({
       }
 
       set(this, '__selectedOptions', __selectedOptions);
-      this.onTreeSelectionChange();
+      this.onTreeSelectionChange(__selectedOptions);
     }
   }
 });
