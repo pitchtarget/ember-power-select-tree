@@ -8,7 +8,36 @@
 
 .ember-power-select-tree-leaf-label {}
 .ember-power-select-tree-leaf-checkbox {}
-.ember-power-select-group-checkbox {}
-.ember-power-select-group-name {}
-.ember-power-select-group-container {}
-.ember-power-select-group-delimiter {}
+.ember-power-select-tree-group-checkbox {}
+.ember-power-select-tree-group-name {
+  cursor: pointer;
+  font-weight: 600;
+}
+.ember-power-select-tree-group-container {}
+.ember-power-select-tree-group-delimiter {
+  cursor: pointer;
+}
+
+.ember-power-select-tree {
+  .ember-power-select-group {
+    margin-left: $ember-power-select-group-margin-left;
+  }
+}
+
+.ember-power-select-tree .ember-power-select-group .ember-power-select-option {
+  padding-left: $ember-power-select-group-margin-left;
+}
+
+.ember-power-select-tree-selected-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ember-power-select-tree-selected-group {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.ember-power-select-tree-selected-leaf {
+  padding-left: $ember-power-select-group-margin-left;
+}

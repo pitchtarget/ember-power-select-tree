@@ -1,11 +1,19 @@
-{{#each groupedSelectedOptions as |opt|}}
-  <b>{{opt.path}}</b>
-  {{#each opt.options as |o|}}
-    <div>
-      {{o.label}}
-    </div>
+<div class="ember-power-select-tree-selected-list">
+  {{#each groupedSelectedOptions as |opt|}}
+    <ul class="ember-power-select-tree-selected-group">
+      <li>
+        <b>{{opt.path}}</b>
+        <ul>
+          {{#each opt.options as |o|}}
+            <li class="ember-power-select-tree-selected-leaf">
+              {{o.label}}
+            </li>
+          {{/each}}
+        </ul>
+      </li>
+    </ul>
   {{/each}}
-{{/each}}
+</div>
 
 {{#power-select
   options=currentOptions

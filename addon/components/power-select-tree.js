@@ -5,6 +5,7 @@ const { get, set, isBlank, computed, A, Component } = Ember;
 
 export default Component.extend({
   layout,
+  classNames: ['ember-power-select-tree'],
   __selectedOptions: null,
   advancedTreeOptions: computed('treeOptions.[]', function() {
     return A(get(this, 'treeOptions'))
