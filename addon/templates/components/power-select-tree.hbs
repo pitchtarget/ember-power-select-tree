@@ -23,11 +23,18 @@
     onToggleGroup=(action 'onToggleGroup')
     handleChecked=(action 'handleChecked')
   ) as |leaf| }}
-
-  <span {{action 'onToggleGroup' leaf}}>
-    {{leaf.label}}
-  </span>
-  {{#if leaf.isSelectable}}
-    {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
+  {{#if hasBlock}}
+    {{yield leaf}}
+  {{else}}
+    <span class="ember-power-select-tree-leaf">
+      <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
+        {{leaf.label}}
+      </span>
+      {{#if leaf.isSelectable}}
+        <span class="ember-power-select-tree-leaf-checkbox">
+          {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
+        </span>
+      {{/if}}
+    </span>
   {{/if}}
 {{/power-select}}
