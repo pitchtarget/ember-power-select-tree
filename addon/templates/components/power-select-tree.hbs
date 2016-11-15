@@ -16,6 +16,7 @@
   searchEnabled=false
   optionsComponent=(component 'tree-options'
     listClass=listClass
+    groupItemClass=groupItemClass
     groupClass=groupClass
     groupNameClass=groupNameClass
     optionsClass=optionsClass
@@ -26,15 +27,13 @@
   {{#if hasBlock}}
     {{yield leaf}}
   {{else}}
-    <span class="ember-power-select-tree-leaf">
-      <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
-        {{leaf.label}}
-      </span>
-      {{#if leaf.isSelectable}}
-        <span class="ember-power-select-tree-leaf-checkbox">
-          {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
-        </span>
-      {{/if}}
+    <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
+      {{leaf.label}}
     </span>
+    {{#if leaf.isSelectable}}
+      <span class="ember-power-select-tree-leaf-checkbox">
+        {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
+      </span>
+    {{/if}}
   {{/if}}
 {{/power-select}}

@@ -7,11 +7,11 @@ export default Component.extend({
   layout,
   tagName: 'ul',
   classNames: ['ember-power-select-tree-list', 'listClass'],
-  listClass: null,
-  groupClass: null,
-  groupNameClass: null,
-  optionsClass: null,
-  optionClass: null,
+  listClass: '',
+  groupClass: '',
+  groupNameClass: '',
+  optionsClass: '',
+  optionClass: '',
   actions: {
     onToggleGroup(node) {
       get(this, 'onToggleGroup')(node);
