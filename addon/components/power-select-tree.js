@@ -7,7 +7,7 @@ export default Component.extend({
   layout,
   __selectedOptions: null,
   advancedTreeOptions: computed('treeOptions.[]', function() {
-    return get(this, 'treeOptions')
+    return A(get(this, 'treeOptions'))
       .map(o => this._collapsableOption(o))
       .map(o => this._buildPath(o));
   }),

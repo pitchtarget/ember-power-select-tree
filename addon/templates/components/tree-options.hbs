@@ -1,8 +1,8 @@
 {{#each options as |opt index|}}
   {{#if opt.nodeName}}
-    <li class="ember-power-select-group" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="option">
-      <span class="ember-power-select-group-name" {{action 'onToggleGroup' opt}}>
-        {{if opt.isCollapsed '>' '\/'}}
+    <li class="ember-power-select-group {{groupClass}}" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="option">
+      <span class="ember-power-select-group-name {{groupNameClass}}" {{action 'onToggleGroup' opt}}>
+        <small>{{if opt.isCollapsed '▶' '▼'}}</small>
         {{opt.nodeName}}
       </span>
       {{#if opt.isSelectable}}
@@ -17,13 +17,13 @@
           role="group"
           onToggleGroup=(action 'onToggleGroup')
           handleChecked=(action 'handleChecked')
-          class="ember-power-select-options" as |option|}}
+          class="ember-power-select-options {{optionsClass}}" as |option|}}
             {{yield option select}}
         {{/tree-options}}
       {{/unless}}
     </li>
   {{else}}
-    <li class="ember-power-select-option"
+    <li class="ember-power-select-option {{optionClass}}"
       aria-disabled={{ember-power-select-true-string-if-present opt.disabled}}
       aria-current="{{eq opt select.highlighted}}"
       data-option-index="{{groupIndex}}{{index}}"

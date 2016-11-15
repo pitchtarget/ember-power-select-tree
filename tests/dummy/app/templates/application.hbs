@@ -1,11 +1,22 @@
 {{#power-select-tree
   treeOptions=treeOptions
   selectedOptions=selectedOptions
+  listClass=listClass
+  groupClass=groupClass
+  groupNameClass=groupNameClass
+  optionsClass=optionsClass
+  optionClass=optionClass
   onTreeSelectionChange=(action 'onTreeSelectionChange')
   as |option|}}
   {{option}}
 {{/power-select-tree}}
 
+<hr>
+{{power-select-tree
+  treeOptions=treeOptions
+  selectedOptions=selectedOptions
+  onTreeSelectionChange=(action 'onTreeSelectionChange')}}
+<hr>
 APPLICATION SELECTED:
 <p>
   {{#each selectedOptions as |opt|}}
