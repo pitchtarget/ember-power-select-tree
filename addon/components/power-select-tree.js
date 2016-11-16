@@ -51,7 +51,7 @@ export default Component.extend({
   },
 
   _buildPath(node, currPath = A()) {
-    if (!get(node, 'nodeName')) {
+    if (!get(node, 'nodeName') && currPath.length) {
       set(node, 'path', currPath.join(' > '));
     } else {
       currPath.push(node.nodeName);
@@ -65,6 +65,7 @@ export default Component.extend({
   _collapsableOption(opt) {
     const isSelectable = get(opt, 'isSelectable');
     const isChecked = leaf => get(leaf, 'isChecked');
+    const isOptChecked = get(opt, 'isChecked');
     const groupName = get(opt, 'groupName');
     const options = get(opt, 'options') || [];
     const isCollapsed = get(opt, 'isCollapsed') || true;
@@ -72,13 +73,14 @@ export default Component.extend({
       return {
         isSelectable,
         isCollapsed,
-        isChecked: options.some(isChecked) || get(opt, 'isChecked'),
+        isChecked: options.some(isChecked) || isOptChecked || false,
         nodeName: groupName,
         options: options.map(o => this._collapsableOption(o))
       };
     }
 
     set(opt, 'isSelectable', true);
+    set(opt, 'isChecked', !!isOptChecked);
     return opt;
   },
 
