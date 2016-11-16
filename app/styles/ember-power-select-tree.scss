@@ -13,19 +13,27 @@
   cursor: pointer;
   font-weight: 600;
 }
-.ember-power-select-tree-group-container {}
+.ember-power-select-tree-group-container {
+  display: flex;
+  padding-left: $ember-power-select-group-margin-left;
+  &:hover {
+    background-color: red;
+  }
+}
+
 .ember-power-select-tree-group-delimiter {
   cursor: pointer;
 }
 
 .ember-power-select-tree {
-  .ember-power-select-group {
-    margin-left: $ember-power-select-group-margin-left;
+  .ember-power-select-option:hover {
+    background-color: gainsboro;
   }
 }
 
-.ember-power-select-tree .ember-power-select-group .ember-power-select-option {
-  padding-left: $ember-power-select-group-margin-left;
+.ember-power-select-group .ember-power-select-option,
+.ember-power-select-group .ember-power-select-group .ember-power-select-option {
+  // padding-left: $ember-power-select-group-margin-left;
 }
 
 .ember-power-select-tree-selected-list ul {

@@ -2,10 +2,12 @@
   treeOptions=treeOptions
   selectedOptions=selectedOptions
   onTreeSelectionChange=(action 'onTreeSelectionChange')}}
-<hr>
-APPLICATION SELECTED:
-<p>
-  {{#each selectedOptions as |opt|}}
-    {{opt.label}}
-  {{/each}}
-</p>
+
+<div>
+  APPLICATION SELECTED:
+  <p>
+    {{#each selectedOptions as |opt|}}
+      {{opt.label}}
+    {{/each}}
+  </p>
+</div>
