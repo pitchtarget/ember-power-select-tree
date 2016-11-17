@@ -51,15 +51,20 @@ export default Component.extend({
   },
 
   _buildPath(node, currPath = A()) {
+    // let foo = JSON.parse(JSON.stringify(node));
+    // let foo = Object.assign({}, node);
+    // let foo = Ember.assign({}, node);
+    let foo = jQuery.extend(true, {}, node);
+
     if (!get(node, 'nodeName') && currPath.length) {
-      set(node, 'path', currPath.join(' > '));
+      set(foo, 'path', currPath.join(' > '));
     } else {
       currPath.push(node.nodeName);
       get(node, 'options').forEach(o => this._buildPath(o, currPath));
       currPath = A();
     }
 
-    return node;
+    return foo;
   },
 
   _collapsableOption(opt) {
