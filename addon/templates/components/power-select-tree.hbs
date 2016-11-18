@@ -2,10 +2,10 @@
   {{#each groupedSelectedOptions as |opt|}}
     <ul class="ember-power-select-tree-selected-group">
       <li>
-        <b>{{opt.path}}</b>
+        <b class="ember-power-select-tree-selected-group-path">{{opt.path}}</b>
         <ul>
           {{#each opt.options as |o|}}
-            <li class="ember-power-select-tree-selected-leaf">
+            <li class="ember-power-select-tree-selected-option">
               {{o.label}}
             </li>
           {{/each}}
@@ -22,6 +22,7 @@
   closeOnSelect=false
   onchange=(action "onToggleGroup")
   searchEnabled=false
+  class="ember-power-select-tree"
   optionsComponent=(component 'tree-options'
     listClass=listClass
     groupItemClass=groupItemClass
