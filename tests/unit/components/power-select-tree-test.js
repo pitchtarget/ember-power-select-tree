@@ -111,12 +111,14 @@ test('currentOptions', function(assert) {
       'isChecked': true,
       'isSelectable': true,
       'key': 1,
-      'label': 'one'
+      'label': 'one',
+      'path': 'Interests'
     }, {
       'isChecked': false,
       'isSelectable': true,
       'key': 2,
-      'label': 'two'
+      'label': 'two',
+      'path': 'Interests'
     }, {
       'isChecked': false,
       'isCollapsed': true,
@@ -126,7 +128,8 @@ test('currentOptions', function(assert) {
         'isChecked': false,
         'isSelectable': true,
         'key': 5,
-        'label': 'five'
+        'label': 'five',
+        'path': 'Interests > SubInterests'
       }]
     }]
   }, 'The first Object is correct');
@@ -139,12 +142,14 @@ test('currentOptions', function(assert) {
       'isChecked': false,
       'isSelectable': true,
       'key': 3,
-      'label': 'three'
+      'label': 'three',
+      'path': 'Demographics'
     }, {
       'isChecked': false,
       'isSelectable': true,
       'key': 4,
-      'label': 'four'
+      'label': 'four',
+      'path': 'Demographics'
     }]
   }, 'It correctly computes currentOptions');
 });
