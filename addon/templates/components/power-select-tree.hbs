@@ -2,7 +2,9 @@
   {{#each groupedSelectedOptions as |opt|}}
     <ul class="ember-power-select-tree-selected-group">
       <li>
-        <b class="ember-power-select-tree-selected-group-path">{{opt.path}}</b>
+        <b class="ember-power-select-tree-selected-group-path">
+          {{opt.path}}
+        </b>
         <ul>
           {{#each opt.options as |o|}}
             <li class="ember-power-select-tree-selected-option">
