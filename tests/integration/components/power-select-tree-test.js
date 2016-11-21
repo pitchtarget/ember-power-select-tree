@@ -11,9 +11,9 @@ const getSelectedGroup = s => $(`.ember-power-select-tree-selected-group:contain
 const getSelectedOption = s => $(`.ember-power-select-tree-selected-option:contains(${s})`);
 const selectOption = s => getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox input').click();
 const toggleGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-name').click();
-const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').click();
+// const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').click();
 const isOptChecked = s => getOptionNode(s).last().find('input').prop('checked');
-const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
+// const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
 const selectedOptions = [{key: 1, label: 'one'}];
 const treeOptions = [{
   groupName: 'Interests',
