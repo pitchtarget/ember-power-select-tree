@@ -36,17 +36,19 @@
   {{#if hasBlock}}
     {{yield leaf}}
   {{else}}
-    <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
-      {{leaf.label}}
-    </span>
-    {{#if leaf.isSelectable}}
-      <span class="ember-power-select-tree-leaf-checkbox">
-        {{input
-          type='checkbox' id=(concat leaf.path leaf.key)
-          change=(action 'handleChecked' leaf)
-          checked=leaf.isChecked}}
-        <label for={{concat leaf.path leaf.key}}></label>
+    <span class="ember-power-select-tree-leaf-container">
+      <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
+        {{leaf.label}}
       </span>
-    {{/if}}
+      {{#if leaf.isSelectable}}
+        <span class="ember-power-select-tree-leaf-checkbox">
+          {{input
+            type='checkbox' id=(concat leaf.path leaf.key)
+            change=(action 'handleChecked' leaf)
+            checked=leaf.isChecked}}
+          <label for={{concat leaf.path leaf.key}}></label>
+        </span>
+      {{/if}}
+    </span>
   {{/if}}
 {{/power-select}}

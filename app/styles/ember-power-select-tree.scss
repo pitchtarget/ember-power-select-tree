@@ -7,12 +7,20 @@
 }
 
 .ember-power-select-tree-leaf-label {}
-.ember-power-select-tree-leaf-checkbox {}
-.ember-power-select-tree-group-checkbox {}
 .ember-power-select-tree-group-name {
   cursor: pointer;
   font-weight: 600;
 }
+.ember-power-select-tree-leaf-checkbox,
+.ember-power-select-tree-group-checkbox {
+  display: flex;
+  align-self: center;
+}
+
+.ember-power-select-tree-leaf-container {
+  display: flex;
+}
+
 .ember-power-select-tree-group-container {
   display: flex;
   padding-left: $ember-power-select-group-margin-left;
