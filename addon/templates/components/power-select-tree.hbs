@@ -41,7 +41,8 @@
     </span>
     {{#if leaf.isSelectable}}
       <span class="ember-power-select-tree-leaf-checkbox">
-        {{input type='checkbox' change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
+        {{input type='checkbox' id=leaf.key change=(action 'handleChecked' leaf) checked=leaf.isChecked}}
+        <label for={{leaf.key}}></label>
       </span>
     {{/if}}
   {{/if}}
