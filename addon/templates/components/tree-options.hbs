@@ -12,7 +12,8 @@
         </span>
         {{#if opt.isSelectable}}
           <span class="ember-power-select-tree-group-checkbox">
-            {{input type='checkbox' checked=opt.isChecked change=(action 'handleChecked' opt)}}
+            <label for={{index}}></label>
+            {{input type='checkbox' id=index checked=opt.isChecked change=(action 'handleChecked' opt)}}
           </span>
         {{/if}}
       </span>
