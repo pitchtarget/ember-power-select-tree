@@ -227,7 +227,7 @@ test('_buildPath', function(assert) {
 test('_collapsableOption for leaf', function(assert) {
   assert.expect(2);
   let subject = this.subject();
-  const collapsible = subject._collapsableOption(Object.assign({}, treeOptions[0]));
+  const collapsible = subject._collapsableOption(Ember.assign({}, treeOptions[0]));
   const leaves = subject._getLeaves(collapsible);
   assert.ok(leaves.every(l => get(l, 'isSelectable')), true, 'All leaves are selectable');
   assert.ok(leaves.every(l => !get(l, 'isChecked')), true, 'All leaves are not checked by default');
@@ -236,7 +236,7 @@ test('_collapsableOption for leaf', function(assert) {
 test('_collapsableOption for group', function(assert) {
   assert.expect(1);
   let subject = this.subject();
-  const collapsible = subject._collapsableOption(Object.assign({}, treeOptions[0]));
+  const collapsible = subject._collapsableOption(Ember.assign({}, treeOptions[0]));
   assert.deepEqual(collapsible, {
     'isSelectable': true,
     'isChecked': false,
@@ -280,7 +280,7 @@ test('_traverseTree', function(assert) {
   const foo = (node) => {
     assert.ok(true, `Function called for node with key: ${node.key}`);
   };
-  subject._traverseTree(Object.assign({}, simpleTree), foo);
+  subject._traverseTree(Ember.assign({}, simpleTree), foo);
 });
 
 test('onTreeSelectionChange', function(assert) {
