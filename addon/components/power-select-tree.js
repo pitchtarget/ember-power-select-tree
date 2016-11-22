@@ -51,7 +51,6 @@ export default Component.extend({
   },
 
   _buildPath(node, currPath = A()) {
-    // let newNode = Ember.assign({}, node);
     let newNode = Ember.$.extend(true, {}, node);
     const path = get(node, 'path');
     if (path && path.length) {

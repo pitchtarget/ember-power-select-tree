@@ -1,11 +1,7 @@
 @import "tree-variables";
 @import "ember-power-select";
 
-.ember-power-select-tree-list {
-  max-height: $ember-power-select-tree-list-max-height;
-  overflow: auto
-}
-
+.ember-power-select-tree-list {}
 .ember-power-select-tree-leaf-label {}
 .ember-power-select-tree-group-name {
   cursor: pointer;

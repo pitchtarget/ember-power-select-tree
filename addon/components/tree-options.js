@@ -6,7 +6,14 @@ const { get, Component } = Ember;
 export default Component.extend({
   layout,
   tagName: 'ul',
-  classNames: ['ember-power-select-tree-list', 'listClass'],
+  classNames: [
+    'ember-power-select-tree-list',
+    'listClass',
+    'groupClass',
+    'groupNameClass',
+    'optionsClass',
+    'optionClass'
+  ],
   listClass: '',
   groupClass: '',
   groupNameClass: '',
