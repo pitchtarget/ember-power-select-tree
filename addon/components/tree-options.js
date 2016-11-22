@@ -6,19 +6,7 @@ const { get, Component } = Ember;
 export default Component.extend({
   layout,
   tagName: 'ul',
-  classNames: [
-    'ember-power-select-tree-list',
-    'listClass',
-    'groupClass',
-    'groupNameClass',
-    'optionsClass',
-    'optionClass'
-  ],
-  listClass: '',
-  groupClass: '',
-  groupNameClass: '',
-  optionsClass: '',
-  optionClass: '',
+  classNames: ['ember-power-select-tree-list'],
   actions: {
     onToggleGroup(node) {
       get(this, 'onToggleGroup')(node);

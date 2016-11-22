@@ -1,7 +1,9 @@
 @import "tree-variables";
 @import "ember-power-select";
 
-.ember-power-select-tree-list {}
+.ember-power-select-tree-list {
+  padding-left: $ember-power-select-group-margin-left;
+}
 .ember-power-select-tree-leaf-label {}
 .ember-power-select-tree-group-name {
   cursor: pointer;
@@ -19,7 +21,6 @@
 
 .ember-power-select-tree-group-container {
   display: flex;
-  padding-left: $ember-power-select-group-margin-left;
   &:hover {
     background-color: gainsboro;
   }
@@ -33,11 +34,6 @@
   .ember-power-select-option:hover {
     background-color: gainsboro;
   }
-}
-
-.ember-power-select-group .ember-power-select-option,
-.ember-power-select-group .ember-power-select-group .ember-power-select-option {
-  // padding-left: $ember-power-select-group-margin-left;
 }
 
 .ember-power-select-tree-selected-list ul {
