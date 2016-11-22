@@ -6,6 +6,7 @@ const { get, set, isBlank, computed, A, Component } = Ember;
 export default Component.extend({
   layout,
   classNames: ['ember-power-select-tree'],
+  defaultLabelOpt: 'label',
   __selectedOptions: null,
   advancedTreeOptions: computed('treeOptions.[]', function() {
     return A(get(this, 'treeOptions'))
@@ -34,6 +35,10 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+
+    if (!get(this, 'labelOpt')) {
+      set(this, 'labelOpt', get(this, 'defaultLabelOpt'));
+    }
 
     const selectedOptions = A(get(this, 'selectedOptions'));
     let leaves = get(this, 'advancedTreeOptions')
