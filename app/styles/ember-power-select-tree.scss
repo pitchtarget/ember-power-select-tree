@@ -3,6 +3,8 @@
 
 .ember-power-select-dropdown > .ember-power-select-tree-list {
   padding-left: 0;
+  max-height: $ember-power-select-tree-list-max-height;
+  overflow: auto;
 }
 .ember-power-select-tree-list {
   padding-left: $ember-power-select-group-margin;
