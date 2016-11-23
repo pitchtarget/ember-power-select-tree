@@ -139,6 +139,10 @@ export default Component.extend({
       this._treeTraverse(nodeOrLeaf, _setChecked);
 
       if (nodeOrLeaf.nodeName) {
+        // TODO: when clicking on a checkbox of a group the onToggleGroup is called
+        //       before the handleChecked (which is wrong). Here we restore the old value
+        set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
+        // END-TODO
         !newVal ?
           leaves.forEach(l => __selectedOptions.removeObject(__selectedOptions.findBy('key', get(l, 'key')))) :
           __selectedOptions.pushObjects(leaves.filter(l => !__selectedOptionsKeys.includes(get(l, 'key'))));
