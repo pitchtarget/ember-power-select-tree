@@ -66,7 +66,9 @@ export default Component.extend({
       set(newNode, 'path', currPath.join(' > '));
     } else {
       currPath.push(get(node, 'nodeName'));
-      set(newNode, 'options', get(node, 'options').map(o => this._buildPath(o, currPath)));
+      set(newNode, 'options', get(node, 'options').map(
+        o => this._buildPath(o, [].concat(...currPath)))
+      );
       currPath = A();
     }
 

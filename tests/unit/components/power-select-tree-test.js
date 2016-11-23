@@ -213,6 +213,8 @@ test('_buildPath', function(assert) {
     'nodeName': 'Interests',
     'options': [{}, {}, {
       nodeName: 'SubInterests', options: [{}]
+    }, {
+      nodeName: 'Foo', options: [{}]
     }]
   });
   assert.deepEqual(nodeWithPath, {
@@ -220,6 +222,9 @@ test('_buildPath', function(assert) {
     'options': [{'path': 'Interests'}, {'path': 'Interests'}, {
       'nodeName': 'SubInterests',
       'options': [{'path': 'Interests > SubInterests'}]
+    }, {
+      'nodeName': 'Foo',
+      'options': [{'path': 'Interests > Foo'}]
     }]
   }, 'Path is correctly populated recursively');
 });
@@ -274,13 +279,13 @@ test('_getLeaves', function(assert) {
   assert.equal(leaves.length, 2, 'It return all the leaves');
 });
 
-test('_traverseTree', function(assert) {
+test('_treeTraverse', function(assert) {
   assert.expect(3);
   let subject = this.subject();
   const foo = (node) => {
     assert.ok(true, `Function called for node with key: ${node.key}`);
   };
-  subject._traverseTree(Ember.assign({}, simpleTree), foo);
+  subject._treeTraverse(Ember.assign({}, simpleTree), foo);
 });
 
 test('onTreeSelectionChange', function(assert) {

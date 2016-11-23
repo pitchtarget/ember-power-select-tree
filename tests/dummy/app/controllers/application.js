@@ -15,14 +15,21 @@ export default Controller.extend({
       }, {
         groupName: 'SubInterests',
         isSelectable: true,
-        options: [
-          {key: 5, label: 'five'},
-          {
-            groupName: 'SubSubInterests',
-            isSelectable: true,
-            options: [{key: 6, label: 'six'}]
-          }
-        ]
+        options: [{
+          key: 5, label: 'five'
+        }, {
+          groupName: 'SubSubInterests',
+          isSelectable: true,
+          options: [{key: 6, label: 'six'}]
+        }]
+      }, {
+        groupName: 'Foooooo',
+        isSelectable: true,
+        options: [{
+          key: 55, label: 'cinquantacinque'
+        }, {
+          key: 66, label: 'sixsix'
+        }]
       }
     ]}, {
       groupName: 'Demographics',
