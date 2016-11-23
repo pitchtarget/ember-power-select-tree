@@ -2,7 +2,7 @@
   {{#if opt.nodeName}}
     <li class="ember-power-select-group" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="group">
       <span class="ember-power-select-tree-group-container">
-        <span class="ember-power-select-tree-group-name-container" {{action 'onToggleGroup' opt}}>
+        <span class="ember-power-select-tree-group-name-container" {{action 'onToggleGroup' opt this}}>
           <small class="ember-power-select-tree-group-delimiter">
             {{if opt.isCollapsed '▶' '▼'}}
           </small>

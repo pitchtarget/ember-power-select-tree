@@ -1,7 +1,7 @@
 /* jshint expr: true */
 import Ember from 'ember';
 import layout from '../templates/components/power-select-tree';
-const { get, set, isBlank, computed, A, Component } = Ember;
+const { get, set, isBlank, computed, A, Component, $ } = Ember;
 
 export default Component.extend({
   layout,
@@ -119,10 +119,14 @@ export default Component.extend({
   },
 
   actions: {
-    onToggleGroup(group) {
+    onToggleGroup(group, evt) {
       if (group.nodeName) {
-        return set(group, 'isCollapsed', !get(group, 'isCollapsed'));
+        set(group, 'isCollapsed', !get(group, 'isCollapsed'));
       }
+      const container = $('.ember-power-select-tree-list').first();
+      const scrollTo = $(evt.element).find(`.ember-power-select-tree-group-container:contains(${group.nodeName})`);
+      const scrollTop = scrollTo.offset().top - container.offset().top + container.scrollTop();
+      return container.animate({ scrollTop }, 500);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
