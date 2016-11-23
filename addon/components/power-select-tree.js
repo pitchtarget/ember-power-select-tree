@@ -16,7 +16,7 @@ export default Component.extend({
   currentOptions: computed('advancedTreeOptions.[]', '__selectedOptions.[]', function() {
     const __selectedOptions = get(this, '__selectedOptions');
     return get(this, 'advancedTreeOptions')
-      .map(o => this._traverseTree(o, (node) => this._setChecked(node, __selectedOptions)));
+      .map(o => this._treeTraverse(o, (node) => this._setChecked(node, __selectedOptions)));
   }),
 
   groupedSelectedOptions: computed('__selectedOptions.[]', function() {
@@ -42,7 +42,7 @@ export default Component.extend({
 
     const selectedOptions = A(get(this, 'selectedOptions'));
     let leaves = get(this, 'advancedTreeOptions')
-      .map(o => this._traverseTree(o, (node) => this._setChecked(node, selectedOptions)))
+      .map(o => this._treeTraverse(o, (node) => this._setChecked(node, selectedOptions)))
       .map(o => this._getLeaves(o));
 
     set(this, '__selectedOptions', isBlank(selectedOptions) ? A() :
@@ -102,11 +102,11 @@ export default Component.extend({
     return leaves;
   },
 
-  _traverseTree(root, func) {
-    func(root);
+  _treeTraverse(root, visit) {
+    visit(root);
     const options = A(get(root, 'options'));
     if (options.length) {
-      options.forEach(o => this._traverseTree(o, func));
+      options.forEach(o => this._treeTraverse(o, visit));
     }
 
     return root;
@@ -130,7 +130,7 @@ export default Component.extend({
       const nodeKey = get(nodeOrLeaf, 'key');
       const leaves = this._getLeaves(nodeOrLeaf);
 
-      this._traverseTree(nodeOrLeaf, _setChecked);
+      this._treeTraverse(nodeOrLeaf, _setChecked);
 
       if (nodeOrLeaf.nodeName) {
         !newVal ?
