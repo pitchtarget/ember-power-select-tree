@@ -117,24 +117,10 @@ export default Component.extend({
   },
 
   actions: {
-    onToggleGroup(nodeOrLeaf) {
-      const __selectedOptions = A(get(this, '__selectedOptions'));
-      const nodeKey = get(nodeOrLeaf, 'key');
-
-      if (nodeOrLeaf.nodeName) {
-        return set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
+    onToggleGroup(group) {
+      if (group.nodeName) {
+        return set(group, 'isCollapsed', !get(group, 'isCollapsed'));
       }
-
-      const isLeafChecked = get(nodeOrLeaf, 'isChecked');
-      if (isLeafChecked) {
-        __selectedOptions.removeObject(__selectedOptions.findBy('key', nodeKey));
-      } else {
-        __selectedOptions.pushObject(nodeOrLeaf);
-      }
-
-      set(nodeOrLeaf, 'isChecked', !isLeafChecked);
-      set(this, '__selectedOptions', __selectedOptions);
-      this.onTreeSelectionChange(__selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');

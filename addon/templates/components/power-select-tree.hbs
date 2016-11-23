@@ -32,7 +32,7 @@
     {{yield leaf}}
   {{else}}
     <span class="ember-power-select-tree-leaf-container">
-      <span {{action 'onToggleGroup' leaf}} class="ember-power-select-tree-leaf-label">
+      <span class="ember-power-select-tree-leaf-label" {{action 'handleChecked' leaf}}>
         {{get leaf labelOpt}}
       </span>
       {{#if leaf.isSelectable}}

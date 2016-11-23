@@ -8,11 +8,11 @@ export default Component.extend({
   tagName: 'ul',
   classNames: ['ember-power-select-tree-list'],
   actions: {
-    onToggleGroup(node) {
-      get(this, 'onToggleGroup')(node);
+    onToggleGroup() {
+      get(this, 'onToggleGroup')(...arguments);
     },
-    handleChecked(node) {
-      get(this, 'handleChecked')(node);
+    handleChecked() {
+      get(this, 'handleChecked')(...arguments);
     }
   }
 });

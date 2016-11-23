@@ -5,15 +5,15 @@ import Ember from 'ember';
 
 const { set } = Ember;
 const clickEPSTreeTrigger = () => clickTrigger('.ember-power-select-tree');
-const getOptionNode = s => $(`.ember-power-select-option:contains(${s})`);
+const getOptionNode = s => $(`.ember-power-select-tree-leaf:contains(${s})`);
 const getGroupNode = s => $(`.ember-power-select-group:contains(${s})`);
 const getSelectedGroup = s => $(`.ember-power-select-tree-selected-group:contains(${s})`);
 const getSelectedOption = s => $(`.ember-power-select-tree-selected-option:contains(${s})`);
 const selectOption = s => getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox input').click();
 const toggleGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-name').click();
-// const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').click();
+const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').first().click();
 const isOptChecked = s => getOptionNode(s).last().find('input').prop('checked');
-// const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
+const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
 const selectedOptions = [{key: 1, label: 'one'}];
 const treeOptions = [{
   groupName: 'Interests',
@@ -92,41 +92,40 @@ test('Selecting/deselecting a leaf checks the checkbox and add the element to th
   assert.equal(getSelectedOption('one').length, 1, 'Option is selected and inserted under the right group');
 });
 
-// test('Selecting/deselecting a group selects and add to the selected list all the subtree\'s elements',
-//   function(assert) {
-//   assert.expect(14);
-//   this.on('onTreeSelectionChange', () => {});
-//   set(this, 'treeOptions', treeOptions);
-//   this.render(hbs`{{power-select-tree
-//     treeOptions=treeOptions onTreeSelectionChange=(action 'onTreeSelectionChange')}}`);
-//   clickEPSTreeTrigger();
-//   toggleGroup('Interests');
-//   toggleGroup('SubNodes');
-//   toggleGroup('DeepDeepInside');
-//   selectGroup('Interests');
-//   assert.ok(isGroupChecked('Interests'), 'It checks the group');
-//   assert.ok(isGroupChecked('SubNodes'), 'It checks the subtree');
-//   assert.ok(isGroupChecked('DeepDeepInside'), 'It checks all subtrees');
-//   assert.ok(isOptChecked('one'), 'It checks the first sub el');
-//   assert.ok(isOptChecked('two'), 'It checks the second sub el');
-//   assert.ok(isOptChecked('five'), 'It checks the first sub sub el');
-//   assert.ok(isOptChecked('six'), 'It checks all sub elements');
-//   assert.equal(getSelectedGroup('Interests').length, 1,
-//     'It adds the main group to selected elements (one time only)');
-//   assert.equal(getSelectedGroup('Interests > SubNodes').length, 1, 'It adds subgroups to selected elements');
-//   assert.equal(getSelectedGroup('Interests > SubNodes > DeepDeepInside').length, 1,
-//     'It adds all subgroups to selected elements');
-//   assert.equal(getSelectedOption('one').length, 1, 'Option one is selected and inserted under the right group');
-//   assert.equal(getSelectedOption('two').length, 1, 'Option two is selected and inserted under the right group');
-//   assert.equal(getSelectedOption('five').length, 1, 'Option five is selected and inserted under the right group');
-//   assert.equal(getSelectedOption('six').length, 1, 'Option six is selected and inserted under the right group');
-// });
+test('Selecting/deselecting a group selects and add to the selected list all the subtree\'s elements',
+  function(assert) {
+  assert.expect(14);
+  this.on('onTreeSelectionChange', () => {});
+  set(this, 'treeOptions', treeOptions);
+  this.render(hbs`{{power-select-tree
+    treeOptions=treeOptions onTreeSelectionChange=(action 'onTreeSelectionChange')}}`);
+  clickEPSTreeTrigger();
+  toggleGroup('Interests');
+  toggleGroup('SubNodes');
+  toggleGroup('DeepDeepInside');
+  selectGroup('Interests');
+  assert.ok(isGroupChecked('Interests'), 'It checks the group');
+  assert.ok(isGroupChecked('SubNodes'), 'It checks the subtree');
+  assert.ok(isGroupChecked('DeepDeepInside'), 'It checks all subtrees');
+  assert.ok(isOptChecked('one'), 'It checks the first sub el');
+  assert.ok(isOptChecked('two'), 'It checks the second sub el');
+  assert.ok(isOptChecked('five'), 'It checks the first sub sub el');
+  assert.ok(isOptChecked('six'), 'It checks all sub elements');
+  assert.equal(getSelectedGroup('Interests').length, 3,
+    'It adds the main group to selected elements (one time only)');
+  assert.equal(getSelectedGroup('Interests > SubNodes').length, 2, 'It adds subgroups to selected elements');
+  assert.equal(getSelectedGroup('Interests > SubNodes > DeepDeepInside').length, 1,
+    'It adds all subgroups to selected elements');
+  assert.equal(getSelectedOption('one').length, 1, 'Option one is selected and inserted under the right group');
+  assert.equal(getSelectedOption('two').length, 1, 'Option two is selected and inserted under the right group');
+  assert.equal(getSelectedOption('five').length, 1, 'Option five is selected and inserted under the right group');
+  assert.equal(getSelectedOption('six').length, 1, 'Option six is selected and inserted under the right group');
+});
 
 test('When Passing selectedOptions they are shown in list', function(assert) {
   assert.expect(2);
   this.on('onTreeSelectionChange', () => {});
   set(this, 'treeOptions', treeOptions);
-  set(this, 'selectedOptions', selectedOptions);
   set(this, 'selectedOptions', selectedOptions);
   this.render(hbs`{{power-select-tree selectedOptions=selectedOptions
     treeOptions=treeOptions onTreeSelectionChange=(action 'onTreeSelectionChange')}}`);
