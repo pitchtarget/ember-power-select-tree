@@ -49,9 +49,9 @@ export default Component.extend({
       [].concat(...leaves).filter(l => selectedOptions.isAny('key', get(l, 'key'))));
   },
 
-  _setChecked(o, __selectedOptions) {
+  _setChecked(o, __selectedOptions, isChecked = true) {
     if (A(__selectedOptions).isAny('key', get(o, 'key'))) {
-      set(o, 'isChecked', true);
+      set(o, 'isChecked', isChecked);
     }
   },
 
@@ -127,6 +127,17 @@ export default Component.extend({
       const scrollTo = $(evt.element).find(`.ember-power-select-tree-group-container:contains(${group.nodeName})`);
       const scrollTop = scrollTo.offset().top - container.offset().top + container.scrollTop();
       return container.animate({ scrollTop }, 500);
+    },
+    removeNodeOrLeaf(nodeOrLeaf) {
+      // TODO fix group remove checkbox
+      const __selectedOptions = get(this, '__selectedOptions');
+      const isNode = !!nodeOrLeaf.nodeName;
+      const key = isNode ? 'path' : 'key';
+      __selectedOptions.removeObjects(
+        __selectedOptions.filterBy(key, get(nodeOrLeaf, key))
+      );
+      this._treeTraverse(nodeOrLeaf, o => set(o, 'isChecked', false));
+      set(this, '__selectedOptions', __selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
