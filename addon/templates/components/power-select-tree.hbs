@@ -40,8 +40,7 @@
   {{#if hasBlock}}
     {{yield leaf}}
   {{else}}
-    <span class="ember-power-select-tree-leaf-container"
-      {{action 'handleChecked' leaf preventDefault=false}}>
+    <span class="ember-power-select-tree-leaf-container">
       <span class="ember-power-select-tree-leaf-label">
         {{get leaf labelOpt}}
       </span>
