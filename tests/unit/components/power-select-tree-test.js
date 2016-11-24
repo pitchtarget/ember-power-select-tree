@@ -279,6 +279,25 @@ test('_getLeaves', function(assert) {
   assert.equal(leaves.length, 2, 'It return all the leaves');
 });
 
+test('_findInternalNode', function(assert) {
+  assert.expect(1);
+  let subject = this.subject();
+  const node = subject._findInternalNode({options: advancedTreeOptions}, 'SubInterests');
+  assert.deepEqual(node, {
+    'isSelectable': true,
+    'isChecked': false,
+    'isCollapsed': true,
+    'nodeName': 'SubInterests',
+    'options': [{
+      'isChecked': false,
+      'key': 5,
+      'label': 'five',
+      'isSelectable': true,
+      'path': 'Interests > SubInterests'
+    }]
+  }, 'It return the Internal node given a nodeName');
+});
+
 test('_treeTraverse', function(assert) {
   assert.expect(3);
   let subject = this.subject();

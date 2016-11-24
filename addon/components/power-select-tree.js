@@ -114,6 +114,21 @@ export default Component.extend({
     return root;
   },
 
+  _findInternalNode(root, nodeName) {
+    if (get(root, 'nodeName') === nodeName) {
+      return root;
+    }
+    let tmp, node;
+    A(get(root, 'options')).forEach(o => {
+      tmp = this._findInternalNode(o, nodeName);
+      if (tmp) {
+        node = tmp;
+      }
+    });
+
+    return node;
+  },
+
   onTreeSelectionChange(opts) {
     return get(this, 'onTreeSelectionChange')(opts);
   },
@@ -129,14 +144,20 @@ export default Component.extend({
       return container.animate({ scrollTop }, 500);
     },
     removeNodeOrLeaf(nodeOrLeaf) {
-      // TODO fix group remove checkbox
       const __selectedOptions = get(this, '__selectedOptions');
-      const isNode = !!nodeOrLeaf.nodeName;
+      const isNode = !get(nodeOrLeaf, 'key');
       const key = isNode ? 'path' : 'key';
       __selectedOptions.removeObjects(
         __selectedOptions.filterBy(key, get(nodeOrLeaf, key))
       );
       this._treeTraverse(nodeOrLeaf, o => set(o, 'isChecked', false));
+      if (isNode) { // unchecks the group itself
+        set(
+          this._findInternalNode({options: get(this, 'currentOptions')}, get(nodeOrLeaf, 'path')),
+          'isChecked',
+          false
+        );
+      }
       set(this, '__selectedOptions', __selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
