@@ -153,9 +153,9 @@ export default Component.extend({
       this._treeTraverse(nodeOrLeaf, o => set(o, 'isChecked', false));
       if (isNode) { // unchecks the group itself
         set(
-          this._findInternalNode({options: get(this, 'currentOptions')}, get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'path')),
-          'isChecked',
-          false
+          this._findInternalNode(
+            {options: get(this, 'currentOptions')},
+            get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'path')), 'isChecked', false
         );
       }
       set(this, '__selectedOptions', __selectedOptions);
