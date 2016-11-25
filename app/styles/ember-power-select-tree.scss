@@ -12,6 +12,7 @@
 .ember-power-select-tree-group-name {
   font-weight: 600;
 }
+.ember-power-select-tree-x,
 .ember-power-select-tree-leaf-checkbox,
 .ember-power-select-tree-group-checkbox {
   display: flex;
@@ -29,6 +30,7 @@
   }
 }
 
+.ember-power-select-tree-x,
 .ember-power-select-tree-group-delimiter {
   cursor: pointer;
 }
@@ -46,9 +48,27 @@
   }
 }
 
-.ember-power-select-tree-selected-group {
+.ember-power-select-tree-selected-options {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.ember-power-select-tree-selected-group,
+.ember-power-select-tree-selected-option {
+  padding-left: $ember-power-select-group-margin;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  &:hover {
+    background-color: $ember-power-select-tree-hover-color;
+  }
+  &:hover .ember-power-select-tree-x {
+    display: inline-flex;
+  }
+}
+
+.ember-power-select-tree-selected-option {
+  padding-left: $ember-power-select-group-margin * 2;
 }
 
 .ember-power-select-tree-selected-leaf {
@@ -56,5 +76,6 @@
 }
 
 .ember-power-select-tree-x {
-  cursor: pointer;
+  display: none;
+  color: darken($ember-power-select-tree-hover-color, 30%);
 }
