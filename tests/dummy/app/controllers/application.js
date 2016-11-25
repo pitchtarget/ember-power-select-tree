@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const { set, Controller } = Ember;
+const { get, set, Controller } = Ember;
 
 export default Controller.extend({
   selectedOptions: [{
@@ -41,6 +41,9 @@ export default Controller.extend({
     }
   ],
   actions: {
+    handleSearch(q, evt) {
+      set(this, 'query', get(evt, 'key'));
+    },
     onTreeSelectionChange(selected) {
       set(this, 'selectedOptions', selected);
     }

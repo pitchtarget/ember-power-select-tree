@@ -134,6 +134,10 @@ export default Component.extend({
   },
 
   actions: {
+    handleSearch() {
+      get(this, 'handleSearch')(...arguments);
+      return false; // prevents default searching behaviour
+    },
     onToggleGroup(group, evt) {
       if (group.nodeName) {
         set(group, 'isCollapsed', !get(group, 'isCollapsed'));

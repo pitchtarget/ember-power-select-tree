@@ -2,9 +2,12 @@
   treeOptions=treeOptions
   placeholder='Fooooo'
   selectedOptions=selectedOptions
+  handleSearch=(action 'handleSearch')
   onTreeSelectionChange=(action 'onTreeSelectionChange')}}
 
+<hr>
 <div>
+  <p>QUERY: {{query}}</p>
   APPLICATION SELECTED:
   <p>
     {{#each selectedOptions as |opt|}}
