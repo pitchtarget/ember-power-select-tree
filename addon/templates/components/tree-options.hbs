@@ -12,7 +12,7 @@
         </span>
         {{#if opt.isSelectable}}
           <span class="ember-power-select-tree-group-checkbox">
-            {{input type='checkbox' id=opt.nodeName checked=opt.isChecked change=(action 'handleChecked' opt preventDefault=false)}}
+            {{input type='checkbox' id=opt.nodeName checked=opt.isChecked click=(action 'handleChecked' opt)}}
             <label for={{opt.nodeName}}></label>
           </span>
         {{/if}}
