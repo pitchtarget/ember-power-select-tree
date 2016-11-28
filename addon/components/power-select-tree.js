@@ -26,7 +26,9 @@ export default Component.extend({
       if (group) {
         get(group, 'options').pushObject(curr);
       } else {
-        prev.pushObject({path, options: A([curr])});
+        prev.pushObject(
+          {path, options: A([curr]),
+          nodeName: get(A(path.split(' > ')), 'lastObject')});
       }
 
       return prev;
@@ -114,13 +116,13 @@ export default Component.extend({
     return root;
   },
 
-  _findInternalNode(root, nodeName) {
-    if (get(root, 'nodeName') === nodeName) {
+  _findInternalNode(root, nameOrPath) {
+    if (get(root, 'nodeName') === nameOrPath || get(root, 'path') === nameOrPath) {
       return root;
     }
     let tmp, node;
     A(get(root, 'options')).forEach(o => {
-      tmp = this._findInternalNode(o, nodeName);
+      tmp = this._findInternalNode(o, nameOrPath);
       if (tmp) {
         node = tmp;
       }
