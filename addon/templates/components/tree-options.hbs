@@ -1,7 +1,7 @@
 {{#each options as |opt index|}}
   {{#if opt.nodeName}}
     <li class="ember-power-select-group" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="group">
-      <span class="ember-power-select-tree-group-container" {{action 'onToggleGroup' opt this preventDefault=false}}>
+      <span class="ember-power-select-tree-group-container" onclick={{action 'onToggleGroup' opt}}>
         <span class="ember-power-select-tree-group-name-container">
           <small class="ember-power-select-tree-group-delimiter">
             {{if opt.isCollapsed '▶' '▼'}}

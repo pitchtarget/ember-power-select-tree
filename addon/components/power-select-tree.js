@@ -64,6 +64,7 @@ export default Component.extend({
       set(newNode, 'path', path.join(' > '));
       return newNode;
     }
+
     if (!get(node, 'nodeName') && currPath.length) {
       set(newNode, 'path', currPath.join(' > '));
     } else {
@@ -135,19 +136,24 @@ export default Component.extend({
     return get(this, 'onTreeSelectionChange')(opts);
   },
 
+  scrollDropdownToSelected(el) {
+    const container = $('.ember-power-select-tree-list').first();
+    const scrollTop = $(el).offset().top - container.offset().top + container.scrollTop();
+    return container.animate({ scrollTop }, 500);
+  },
+
   actions: {
     handleSearch() {
       get(this, 'handleSearch')(...arguments);
       return false; // prevents default searching behaviour
     },
     onToggleGroup(group, evt) {
-      if (group.nodeName) {
-        set(group, 'isCollapsed', !get(group, 'isCollapsed'));
+      if (get(evt, 'target.type') === 'checkbox') {
+        return;
       }
-      const container = $('.ember-power-select-tree-list').first();
-      const scrollTo = $(evt.element).find(`.ember-power-select-tree-group-container:contains(${group.nodeName})`);
-      const scrollTop = scrollTo.offset().top - container.offset().top + container.scrollTop();
-      return container.animate({ scrollTop }, 500);
+      set(group, 'isCollapsed', !get(group, 'isCollapsed'));
+
+      return this.scrollDropdownToSelected(get(evt, 'target'));
     },
     removeNodeOrLeaf(nodeOrLeaf) {
       const __selectedOptions = get(this, '__selectedOptions');
@@ -176,11 +182,7 @@ export default Component.extend({
 
       this._treeTraverse(nodeOrLeaf, _setChecked);
 
-      if (nodeOrLeaf.nodeName) {
-        // TODO: when clicking on a checkbox of a group the onToggleGroup is called
-        //       before the handleChecked (which is wrong). Here we restore the old value
-        set(nodeOrLeaf, 'isCollapsed', !get(nodeOrLeaf, 'isCollapsed'));
-        // END-TODO
+      if (get(nodeOrLeaf, 'nodeName')) {
         !newVal ?
           leaves.forEach(l => __selectedOptions.removeObject(__selectedOptions.findBy('key', get(l, 'key')))) :
           __selectedOptions.pushObjects(leaves.filter(l => !__selectedOptionsKeys.includes(get(l, 'key'))));
