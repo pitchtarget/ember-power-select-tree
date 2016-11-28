@@ -149,7 +149,8 @@ export default Component.extend({
     },
     onToggleGroup(group, evt) {
       // Check if checkbox or container is clicked
-      if (!get(evt, 'target.id').includes('tree-group')) {
+      const tagName = get(evt, 'target.tagName').toLowerCase();
+      if (tagName === 'label' || tagName === 'input') {
         return;
       }
       set(group, 'isCollapsed', !get(group, 'isCollapsed'));

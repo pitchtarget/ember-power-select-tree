@@ -1,7 +1,7 @@
 {{#each options as |opt index|}}
   {{#if opt.nodeName}}
     <li class="ember-power-select-group" aria-disabled={{ember-power-select-true-string-if-present opt.disabled}} role="group">
-      <span class="ember-power-select-tree-group-container" id={{concat 'tree-group-' opt.nodeName}} onclick={{action 'onToggleGroup' opt}}>
+      <span class="ember-power-select-tree-group-container" onclick={{action 'onToggleGroup' opt}}>
         <span class="ember-power-select-tree-group-name-container">
           <small class="ember-power-select-tree-group-delimiter">
             {{if opt.isCollapsed '▶' '▼'}}
@@ -12,8 +12,8 @@
         </span>
         {{#if opt.isSelectable}}
           <span class="ember-power-select-tree-group-checkbox">
-            {{input type='checkbox' id=opt.nodeName checked=opt.isChecked click=(action 'handleChecked' opt)}}
-            <label for={{opt.nodeName}}></label>
+            {{input type='checkbox' id=(concat 'tree-group-checkbox-' opt.nodeName) checked=opt.isChecked click=(action 'handleChecked' opt)}}
+            <label for={{concat 'tree-group-checkbox-' opt.nodeName}}></label>
           </span>
         {{/if}}
       </span>
@@ -32,7 +32,7 @@
       {{/unless}}
     </li>
   {{else}}
-    <li class="ember-power-select-tree-leaf" {{action 'handleChecked' opt preventDefault=false}}
+    <li class="ember-power-select-tree-leaf" {{action 'handleChecked' opt}}
       aria-disabled={{ember-power-select-true-string-if-present opt.disabled}}
       aria-current="{{eq opt select.highlighted}}"
       data-option-index="{{groupIndex}}{{index}}"
