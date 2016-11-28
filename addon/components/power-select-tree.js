@@ -82,11 +82,13 @@ export default Component.extend({
     const isSelectable = get(opt, 'isSelectable');
     const isChecked = leaf => get(leaf, 'isChecked');
     const isOptChecked = get(opt, 'isChecked');
+    const path = get(opt, 'path');
     const groupName = get(opt, 'groupName');
     const options = get(opt, 'options') || [];
     const isCollapsed = get(opt, 'isCollapsed') || true;
     if (groupName) {
       return {
+        path,
         isSelectable,
         isCollapsed,
         isChecked: options.some(isChecked) || isOptChecked || false,
