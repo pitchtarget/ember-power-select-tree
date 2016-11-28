@@ -171,7 +171,8 @@ test('groupedSelectedOptions', function(assert) {
       'label': 'four',
       'path': 'Demographics'
     }],
-    'path': 'Demographics'
+    'path': 'Demographics',
+    'nodeName': 'Demographics'
   }, {
     'options': [{
       'isChecked': true,
@@ -186,7 +187,8 @@ test('groupedSelectedOptions', function(assert) {
       'label': 'five',
       'path': 'Interests'
     }],
-    'path': 'Interests'
+    'path': 'Interests',
+    'nodeName': 'Interests'
   }], 'It correctly calculates groupedSelectedOptions');
 });
 
