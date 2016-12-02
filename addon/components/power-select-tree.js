@@ -21,7 +21,7 @@ export default Component.extend({
 
   groupedSelectedOptions: computed('__selectedOptions.[]', function() {
     return A(get(this, '__selectedOptions')).reduce((prev, curr) => {
-      const path = get(curr, 'path');
+      const path = get(curr, 'path') || '';
       const group = prev.findBy('path', path);
       if (group) {
         get(group, 'options').pushObject(curr);
@@ -42,13 +42,27 @@ export default Component.extend({
       set(this, 'labelOpt', get(this, 'defaultLabelOpt'));
     }
 
+    this._setSelectedOptions();
+  },
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+    if (!isBlank(get(this, 'selectedOptions'))) {
+      this._setSelectedOptions();
+    }
+  },
+
+  _setSelectedOptions() {
     const selectedOptions = A(get(this, 'selectedOptions'));
     let leaves = get(this, 'advancedTreeOptions')
       .map(o => this._treeTraverse(o, (node) => this._setChecked(node, selectedOptions)))
       .map(o => this._getLeaves(o));
-
-    set(this, '__selectedOptions', isBlank(selectedOptions) ? A() :
-      [].concat(...leaves).filter(l => selectedOptions.isAny('key', get(l, 'key'))));
+    let node;
+    let filteredOptions = selectedOptions.map(opt => {
+      node = [].concat(...leaves).find(leaf => get(opt, 'key') === get(leaf, 'key'));
+      return node ? node : opt;
+    });
+    set(this, '__selectedOptions', isBlank(selectedOptions) ? A() : filteredOptions);
   },
 
   _setChecked(o, __selectedOptions, isChecked = true) {
