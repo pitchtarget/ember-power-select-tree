@@ -59,7 +59,9 @@ export default Component.extend({
       .map(o => this._getLeaves(o));
     let node;
     let filteredOptions = selectedOptions.map(opt => {
-      node = [].concat(...leaves).find(leaf => get(opt, 'key') === get(leaf, 'key'));
+      node = [].concat(...leaves).find(
+        leaf => get(opt, 'key') === get(leaf, 'key') && get(opt, 'type') === get(leaf, 'type')
+      );
       return node ? node : opt;
     });
     set(this, '__selectedOptions', isBlank(selectedOptions) ? A() : filteredOptions);
