@@ -2,7 +2,7 @@
   {{#each groupedSelectedOptions as |opt|}}
     <div class="ember-power-select-tree-selected-group">
       <b class="ember-power-select-tree-selected-group-path">
-        {{opt.path}}
+        {{opt.humanPath}}
       </b>
       <span class="ember-power-select-tree-x" {{action 'removeNodeOrLeaf' opt}}>
         &#10005;
@@ -41,8 +41,8 @@
         {{get leaf labelOpt}}
       </span>
       <span class="ember-power-select-tree-leaf-checkbox">
-        {{input type='checkbox' id=(concat leaf.path leaf.key) checked=leaf.isChecked}}
-        <label for={{concat leaf.path leaf.key}}></label>
+        {{input type='checkbox' id=(concat leaf.humanPath leaf.key) checked=leaf.isChecked}}
+        <label for={{concat leaf.humanPath leaf.key}}></label>
       </span>
     </span>
   {{/if}}

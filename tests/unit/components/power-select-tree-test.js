@@ -36,13 +36,15 @@ const advancedTreeOptions = [{
     'key': 1,
     'label': 'one',
     'isSelectable': true,
-    'path': 'Interests'
+    'humanPath': 'Interests',
+    'path': ['Interests']
   }, {
     'isChecked': false,
     'key': 2,
     'label': 'two',
     'isSelectable': true,
-    'path': 'Interests'
+    'humanPath': 'Interests',
+    'path': ['Interests']
   }, {
     'isSelectable': true,
     'isChecked': false,
@@ -53,7 +55,8 @@ const advancedTreeOptions = [{
       'key': 5,
       'label': 'five',
       'isSelectable': true,
-      'path': 'Interests > SubInterests'
+      'humanPath': 'Interests > SubInterests',
+      'path': ['Interests', 'SubInterests']
     }]
   }]}, {
   'isChecked': false,
@@ -65,13 +68,15 @@ const advancedTreeOptions = [{
     'key': 3,
     'label': 'three',
     'isSelectable': true,
-    'path': 'Demographics'
+    'humanPath': 'Demographics',
+    'path': ['Demographics']
   }, {
     'key': 4,
     'isChecked': false,
     'label': 'four',
     'isSelectable': true,
-    'path': 'Demographics'
+    'humanPath': 'Demographics',
+    'path': ['Demographics']
   }]
 }];
 
@@ -94,7 +99,7 @@ test('init', function(assert) {
   let subject = this.subject({selectedOptions, treeOptions});
   const selectedOpts = get(subject, '__selectedOptions');
   assert.deepEqual(selectedOpts, [{
-    key: 1, label: 'one', isSelectable: true, isChecked: true, path: 'Interests'
+    key: 1, label: 'one', isSelectable: true, isChecked: true, path: ['Interests'], humanPath: 'Interests'
   }], ' It correctly sets __selectedOptions given some selectedOptions');
 });
 
@@ -112,13 +117,15 @@ test('currentOptions', function(assert) {
       'isSelectable': true,
       'key': 1,
       'label': 'one',
-      'path': 'Interests'
+      'humanPath': 'Interests',
+      'path': ['Interests']
     }, {
       'isChecked': false,
       'isSelectable': true,
       'key': 2,
       'label': 'two',
-      'path': 'Interests'
+      'humanPath': 'Interests',
+      'path': ['Interests']
     }, {
       'isChecked': false,
       'isCollapsed': true,
@@ -129,7 +136,8 @@ test('currentOptions', function(assert) {
         'isSelectable': true,
         'key': 5,
         'label': 'five',
-        'path': 'Interests > SubInterests'
+        'humanPath': 'Interests > SubInterests',
+        'path': ['Interests', 'SubInterests']
       }]
     }]
   }, 'The first Object is correct');
@@ -143,13 +151,15 @@ test('currentOptions', function(assert) {
       'isSelectable': true,
       'key': 3,
       'label': 'three',
-      'path': 'Demographics'
+      'path': ['Demographics'],
+      'humanPath': 'Demographics'
     }, {
       'isChecked': false,
       'isSelectable': true,
       'key': 4,
       'label': 'four',
-      'path': 'Demographics'
+      'path': ['Demographics'],
+      'humanPath': 'Demographics'
     }]
   }, 'It correctly computes currentOptions');
 });
@@ -159,9 +169,9 @@ test('groupedSelectedOptions', function(assert) {
 
   let subject = this.subject({ treeOptions });
   set(subject, '__selectedOptions', [
-    {key: 1, label: 'one', isSelectable: true, isChecked: true, path: 'Interests'},
-    {key: 5, label: 'five', isSelectable: true, isChecked: true, path: 'Interests'},
-    {key: 4, label: 'four', isSelectable: true, isChecked: true, path: 'Demographics'}
+    {key: 1, label: 'one', isSelectable: true, isChecked: true, path: ['Interests'], humanPath: 'Interests'},
+    {key: 5, label: 'five', isSelectable: true, isChecked: true, path: ['Interests'], humanPath: 'Interests'},
+    {key: 4, label: 'four', isSelectable: true, isChecked: true, path: ['Demographics'], humanPath: 'Demographics'}
   ]);
   assert.deepEqual(get(subject, 'groupedSelectedOptions'), [{
     'options': [{
@@ -169,9 +179,10 @@ test('groupedSelectedOptions', function(assert) {
       'isSelectable': true,
       'key': 4,
       'label': 'four',
-      'path': 'Demographics'
+      'humanPath': 'Demographics',
+      'path': ['Demographics']
     }],
-    'path': 'Demographics',
+    'humanPath': 'Demographics',
     'nodeName': 'Demographics'
   }, {
     'options': [{
@@ -179,15 +190,17 @@ test('groupedSelectedOptions', function(assert) {
       'isSelectable': true,
       'key': 1,
       'label': 'one',
-      'path': 'Interests'
+      'humanPath': 'Interests',
+      'path': ['Interests']
     }, {
       'isChecked': true,
       'isSelectable': true,
       'key': 5,
       'label': 'five',
-      'path': 'Interests'
+      'humanPath': 'Interests',
+      'path': ['Interests']
     }],
-    'path': 'Interests',
+    'humanPath': 'Interests',
     'nodeName': 'Interests'
   }], 'It correctly calculates groupedSelectedOptions');
 });
@@ -221,12 +234,12 @@ test('_buildPath', function(assert) {
   });
   assert.deepEqual(nodeWithPath, {
     'nodeName': 'Interests',
-    'options': [{'path': 'Interests'}, {'path': 'Interests'}, {
+    'options': [{'path': ['Interests'], 'humanPath': 'Interests'}, {'path': ['Interests'], 'humanPath': 'Interests'}, {
       'nodeName': 'SubInterests',
-      'options': [{'path': 'Interests > SubInterests'}]
+      'options': [{'path': ['Interests', 'SubInterests'], 'humanPath': 'Interests > SubInterests'}]
     }, {
       'nodeName': 'Foo',
-      'options': [{'path': 'Interests > Foo'}]
+      'options': [{'path': ['Interests', 'Foo'], 'humanPath': 'Interests > Foo'}]
     }]
   }, 'Path is correctly populated recursively');
 });
@@ -295,7 +308,8 @@ test('_findInternalNode', function(assert) {
       'key': 5,
       'label': 'five',
       'isSelectable': true,
-      'path': 'Interests > SubInterests'
+      'humanPath': 'Interests > SubInterests',
+      'path': ['Interests', 'SubInterests']
     }]
   }, 'It return the Internal node given a nodeName');
 });

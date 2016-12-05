@@ -141,7 +141,8 @@ test('onTreeSelectionChange is called when adding/removing elements', function(a
       'isSelectable': true,
       'key': 1,
       'label': 'one',
-      'path': 'Interests'
+      'path': ['Interests'],
+      'humanPath': 'Interests'
     }], 'Actions is called with correct options');
   });
   set(this, 'treeOptions', treeOptions);

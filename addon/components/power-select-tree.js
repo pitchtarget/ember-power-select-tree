@@ -21,18 +21,18 @@ export default Component.extend({
 
   groupedSelectedOptions: computed('__selectedOptions.[]', function() {
     return A(get(this, '__selectedOptions')).reduce((prev, curr) => {
-      const path = get(curr, 'path') || '';
-      const group = prev.findBy('path', path);
+      const humanPath = get(curr, 'humanPath') || '';
+      const group = prev.findBy('humanPath', humanPath);
       if (group) {
         get(group, 'options').pushObject(curr);
       } else {
         prev.pushObject(
-          {path, options: A([curr]),
-          nodeName: get(A(path.split(' > ')), 'lastObject')});
+          {humanPath, options: A([curr]),
+          nodeName: get(A(humanPath.split(' > ')), 'lastObject')});
       }
 
       return prev;
-    }, A()).sortBy('path');
+    }, A()).sortBy('humanPath');
   }),
 
   init() {
@@ -79,12 +79,13 @@ export default Component.extend({
     let newNode = Ember.$.extend(true, {}, node);
     const path = get(node, 'path');
     if (path && path.length) {
-      set(newNode, 'path', path.join(' > '));
+      set(newNode, 'humanPath', path.join(' > '));
       return newNode;
     }
 
     if (!get(node, 'nodeName') && currPath.length) {
-      set(newNode, 'path', currPath.join(' > '));
+      set(newNode, 'humanPath', currPath.join(' > '));
+      set(newNode, 'path', currPath);
     } else {
       currPath.push(get(node, 'nodeName'));
       set(newNode, 'options', A(get(node, 'options')).map(
@@ -136,7 +137,7 @@ export default Component.extend({
   },
 
   _findInternalNode(root, nameOrPath) {
-    if (get(root, 'nodeName') === nameOrPath || get(root, 'path') === nameOrPath) {
+    if (get(root, 'nodeName') === nameOrPath || get(root, 'humanPath') === nameOrPath) {
       return root;
     }
     let tmp, node;
@@ -178,7 +179,7 @@ export default Component.extend({
     removeNodeOrLeaf(nodeOrLeaf) {
       const __selectedOptions = get(this, '__selectedOptions');
       const isNode = !get(nodeOrLeaf, 'key');
-      const key = isNode ? 'path' : 'key';
+      const key = isNode ? 'humanPath' : 'key';
       __selectedOptions.removeObjects(
         __selectedOptions.filterBy(key, get(nodeOrLeaf, key))
       );
@@ -187,7 +188,7 @@ export default Component.extend({
         set(
           this._findInternalNode(
             {options: get(this, 'currentOptions')},
-            get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'path')), 'isChecked', false
+            get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'humanPath')), 'isChecked', false
         );
       }
       set(this, '__selectedOptions', __selectedOptions);
