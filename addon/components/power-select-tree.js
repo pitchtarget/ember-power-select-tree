@@ -62,7 +62,13 @@ export default Component.extend({
       node = [].concat(...leaves).find(
         leaf => get(opt, 'key') === get(leaf, 'key') && get(opt, 'type') === get(leaf, 'type')
       );
-      return node ? node : opt;
+
+      if (node) {
+        return node;
+      }
+
+      set(opt, 'humanPath', get(opt, 'path').join(' > '));
+      return opt;
     });
     set(this, '__selectedOptions', isBlank(selectedOptions) ? A() : filteredOptions);
   },
