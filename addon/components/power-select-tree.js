@@ -47,9 +47,20 @@ export default Component.extend({
     this._setSelectedOptions();
   },
 
-  didReceiveAttrs() {
+  didReceiveAttrs({ oldAttrs, newAttrs }) {
     this._super(...arguments);
-    if (!isBlank(get(this, 'selectedOptions'))) {
+    let oldSelected;
+    let newSelected;
+
+    if (oldAttrs) {
+      oldSelected = JSON.stringify(get(oldAttrs, 'selectedOptions'));
+    }
+
+    if (newAttrs) {
+      newSelected = JSON.stringify(get(newAttrs, 'selectedOptions'));
+    }
+
+    if (!isBlank(get(this, 'selectedOptions')) && (oldSelected !== newSelected)) {
       this._setSelectedOptions();
     }
   },
