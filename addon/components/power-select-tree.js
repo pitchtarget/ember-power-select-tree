@@ -68,7 +68,9 @@ export default Component.extend({
   },
 
   _setChecked(o, __selectedOptions, isChecked = true) {
-    if (A(__selectedOptions).isAny('key', get(o, 'key'))) {
+    if (A(__selectedOptions).find(
+      opt => get(opt, 'key') === get(o, 'key') && get(opt, 'type') === get(o, 'type')
+    )) {
       set(o, 'isChecked', isChecked);
     }
   },
