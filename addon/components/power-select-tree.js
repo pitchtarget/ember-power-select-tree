@@ -26,9 +26,11 @@ export default Component.extend({
       if (group) {
         get(group, 'options').pushObject(curr);
       } else {
-        prev.pushObject(
-          {humanPath, options: A([curr]),
-          nodeName: get(A(humanPath.split(' > ')), 'lastObject')});
+        prev.pushObject({
+          humanPath,
+          options: A([curr]),
+          nodeName: get(A(humanPath.split(' > ')), 'lastObject')
+        });
       }
 
       return prev;
