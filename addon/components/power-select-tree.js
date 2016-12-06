@@ -7,6 +7,7 @@ export default Component.extend({
   layout,
   classNames: ['ember-power-select-tree'],
   defaultLabelOpt: 'label',
+  defaultDelimiter: ' > ',
   __selectedOptions: null,
   advancedTreeOptions: computed('treeOptions.[]', function() {
     return A(get(this, 'treeOptions'))
@@ -29,7 +30,7 @@ export default Component.extend({
         prev.pushObject({
           humanPath,
           options: A([curr]),
-          nodeName: get(A(humanPath.split(' > ')), 'lastObject')
+          nodeName: get(A(humanPath.split(get(this, 'defaultDelimiter'))), 'lastObject')
         });
       }
 
@@ -80,7 +81,7 @@ export default Component.extend({
         return node;
       }
 
-      set(opt, 'humanPath', get(opt, 'path').join(' > '));
+      set(opt, 'humanPath', get(opt, 'path').join(get(this, 'defaultDelimiter')));
       return opt;
     });
     set(this, '__selectedOptions', isBlank(selectedOptions) ? A() : filteredOptions);
@@ -98,12 +99,12 @@ export default Component.extend({
     let newNode = Ember.$.extend(true, {}, node);
     const path = get(node, 'path');
     if (path && path.length) {
-      set(newNode, 'humanPath', path.join(' > '));
+      set(newNode, 'humanPath', path.join(get(this, 'defaultDelimiter')));
       return newNode;
     }
 
     if (!get(node, 'nodeName') && currPath.length) {
-      set(newNode, 'humanPath', currPath.join(' > '));
+      set(newNode, 'humanPath', currPath.join(get(this, 'defaultDelimiter')));
       set(newNode, 'path', currPath);
     } else {
       currPath.push(get(node, 'nodeName'));
