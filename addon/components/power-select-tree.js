@@ -182,6 +182,12 @@ export default Component.extend({
   },
 
   actions: {
+    onclose() {
+      const onclose = get(this, 'onclose');
+      if (onclose) {
+        return get(this, 'onclose');
+      }
+    },
     handleSearch() {
       get(this, 'handleSearch')(...arguments);
       return false; // prevents default searching behaviour
