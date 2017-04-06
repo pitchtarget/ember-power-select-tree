@@ -185,7 +185,7 @@ export default Component.extend({
     onclose() {
       const onclose = get(this, 'onclose');
       if (onclose) {
-        return get(this, 'onclose');
+        return onclose();
       }
     },
     handleSearch() {
