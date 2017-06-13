@@ -132,3 +132,23 @@ test('When Passing selectedOptions they are shown in list', function(assert) {
   assert.equal(getSelectedGroup('Interests').length, 1, 'It shows selected elements in group');
   assert.equal(getSelectedOption('one').length, 1, 'Option selected is inserted under the right group');
 });
+
+test('onTreeSelectionChange is called when adding/removing elements', function(assert) {
+  assert.expect(1);
+  this.on('onTreeSelectionChange', (opts) => {
+    assert.deepEqual(opts, [{
+      'isChecked': true,
+      'isSelectable': true,
+      'key': 1,
+      'label': 'one',
+      'path': ['Interests'],
+      'humanPath': 'Interests'
+    }], 'Actions is called with correct options');
+  });
+  set(this, 'treeOptions', treeOptions);
+  this.render(hbs`{{power-select-tree
+    treeOptions=treeOptions onTreeSelectionChange=(action 'onTreeSelectionChange')}}`);
+  clickEPSTreeTrigger();
+  toggleGroup('Interests');
+  selectOption('one');
+});
