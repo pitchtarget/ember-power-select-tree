@@ -42,7 +42,11 @@
         {{get leaf labelOpt}}
       </span>
       <span class="ember-power-select-tree-leaf-checkbox">
-        {{input type='checkbox' id=(concat leaf.humanPath leaf.key) checked=leaf.isChecked}}
+        {{input
+          change=(action 'handleChecked' leaf)
+          type='checkbox'
+          id=(concat leaf.humanPath leaf.key)
+          checked=leaf.isChecked}}
         <label for={{concat leaf.humanPath leaf.key}}></label>
       </span>
     </span>
