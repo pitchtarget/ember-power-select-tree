@@ -1,0 +1,26 @@
+<div class="ember-power-select-tree-selected-list">
+  {{#each groupedSelectedOptions as |opt|}}
+    <div class="ember-power-select-tree-selected-group">
+      <b class="ember-power-select-tree-selected-group-path">
+        {{opt.humanPath}}
+      </b>
+      <span class="ember-power-select-tree-x" {{action 'removeNodeOrLeaf' opt}}>
+        &#10005;
+      </span>
+    </div>
+    <ul class="ember-power-select-tree-selected-options">
+      {{#if (eq opt.humanPath customProp)}}
+        {{component customComponent}}
+      {{else}}
+        {{#each opt.options as |o|}}
+          <li class="ember-power-select-tree-selected-option">
+            {{get o labelOpt}}
+            <span class="ember-power-select-tree-x" {{action 'removeNodeOrLeaf' o}}>
+              &#10005;
+            </span>
+          </li>
+        {{/each}}
+      {{/if}}
+    </ul>
+  {{/each}}
+</div>

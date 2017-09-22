@@ -1,0 +1,1 @@
+export { default } from 'ember-power-select-tree/components/grouped-selections';
