@@ -9,11 +9,23 @@ const getOptionNode = s => $(`.ember-power-select-tree-leaf:contains(${s})`);
 const getGroupNode = s => $(`.ember-power-select-group:contains(${s})`);
 const getSelectedGroup = s => $(`.ember-power-select-tree-selected-group:contains(${s})`);
 const getSelectedOption = s => $(`.ember-power-select-tree-selected-option:contains(${s})`);
-const selectOption = s => getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox input').first().click();
-const toggleGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-container').first().click();
-const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').first().click();
+const selectOption = s => auxClick(getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox label')[0]);
+const toggleGroup = s => auxClick(getGroupNode(s).last().find('.ember-power-select-tree-group-container')[0]);
+const selectGroup = s => auxClick(getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox label')[0]);
 const isOptChecked = s => getOptionNode(s).last().find('input').prop('checked');
 const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
+const auxClick = el => {
+  const ev = document.createEvent('MouseEvent');
+  ev.initMouseEvent(
+    'click',
+    true /* bubble */, true /* cancelable */,
+    window, null,
+    0, 0, 0, 0, /* coordinates */
+    false, false, false, false, /* modifier keys */
+    0 /*left*/, null
+  );
+  el.dispatchEvent(ev);
+};
 const selectedOptions = [{key: 1, label: 'one'}];
 const treeOptions = [{
   groupName: 'Interests',
