@@ -218,6 +218,7 @@ export default Component.extend({
         );
       }
       set(this, '__selectedOptions', __selectedOptions);
+      this.onTreeSelectionChange(__selectedOptions);
     },
     handleChecked(nodeOrLeaf) {
       const newVal = !get(nodeOrLeaf, 'isChecked');
