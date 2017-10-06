@@ -9,23 +9,11 @@ const getOptionNode = s => $(`.ember-power-select-tree-leaf:contains(${s})`);
 const getGroupNode = s => $(`.ember-power-select-group:contains(${s})`);
 const getSelectedGroup = s => $(`.ember-power-select-tree-selected-group:contains(${s})`);
 const getSelectedOption = s => $(`.ember-power-select-tree-selected-option:contains(${s})`);
-const selectOption = s => auxClick(getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox label')[0]);
-const toggleGroup = s => auxClick(getGroupNode(s).last().find('.ember-power-select-tree-group-container')[0]);
-const selectGroup = s => auxClick(getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox label')[0]);
+const selectOption = s => getOptionNode(s).find('.ember-power-select-tree-leaf-checkbox input').first().click();
+const toggleGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-container').first().click();
+const selectGroup = s => getGroupNode(s).last().find('.ember-power-select-tree-group-checkbox input').first().click();
 const isOptChecked = s => getOptionNode(s).last().find('input').prop('checked');
 const isGroupChecked = s => getGroupNode(s).last().find('input').prop('checked');
-const auxClick = el => {
-  const ev = document.createEvent('MouseEvent');
-  ev.initMouseEvent(
-    'click',
-    true /* bubble */, true /* cancelable */,
-    window, null,
-    0, 0, 0, 0, /* coordinates */
-    false, false, false, false, /* modifier keys */
-    0 /*left*/, null
-  );
-  el.dispatchEvent(ev);
-};
 const selectedOptions = [{key: 1, label: 'one'}];
 const treeOptions = [{
   groupName: 'Interests',
@@ -163,4 +151,18 @@ test('onTreeSelectionChange is called when adding/removing elements', function(a
   clickEPSTreeTrigger();
   toggleGroup('Interests');
   selectOption('one');
+});
+
+test('onTreeSelectionChange is called when removing elements', function(assert) {
+  assert.expect(1);
+  this.on('onTreeSelectionChange', (opts) => {
+    assert.deepEqual(opts, [], 'Actions is called with correct options');
+  });
+  set(this, 'treeOptions', treeOptions);
+  set(this, 'selectedOptions', selectedOptions);
+  this.render(hbs`{{power-select-tree
+    selectedOptions=selectedOptions
+    treeOptions=treeOptions onTreeSelectionChange=(action 'onTreeSelectionChange')}}`);
+
+  this.$('.ember-power-select-tree-x').click();
 });
