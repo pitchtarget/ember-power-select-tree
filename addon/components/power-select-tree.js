@@ -1,7 +1,11 @@
 /* jshint expr: true */
-import Ember from 'ember';
+import { isBlank } from '@ember/utils';
+
+import { computed, set, get } from '@ember/object';
+import { A } from '@ember/array';
+import Component from '@ember/component';
+import $ from 'jquery';
 import layout from '../templates/components/power-select-tree';
-const { get, set, isBlank, computed, A, Component, $ } = Ember;
 
 export default Component.extend({
   layout,
@@ -48,22 +52,24 @@ export default Component.extend({
     this._setSelectedOptions();
   },
 
-  didReceiveAttrs({ oldAttrs, newAttrs }) {
+  didReceiveAttrs() {
     this._super(...arguments);
-    let oldSelected;
-    let newSelected;
+    let oldSelected = get(this, '_tmpSelectedOptions');
+    let newSelected = get(this, 'selectedOptions');
 
-    if (oldAttrs) {
-      oldSelected = JSON.stringify(get(oldAttrs, 'selectedOptions'));
+    if (oldSelected) {
+      oldSelected = JSON.stringify(oldSelected);
     }
 
-    if (newAttrs) {
-      newSelected = JSON.stringify(get(newAttrs, 'selectedOptions'));
+    if (newSelected) {
+      newSelected = JSON.stringify(newSelected);
     }
 
-    if (!isBlank(get(this, 'selectedOptions')) && (oldSelected !== newSelected)) {
+    if (!isBlank(newSelected) && (oldSelected !== newSelected)) {
       this._setSelectedOptions();
     }
+
+    set(this, '_tmpSelectedOptions', newSelected);
   },
 
   _setSelectedOptions() {
@@ -96,7 +102,7 @@ export default Component.extend({
   },
 
   _buildPath(node, currPath = A()) {
-    let newNode = Ember.$.extend(true, {}, node);
+    let newNode = $.extend(true, {}, node);
     const path = get(node, 'path');
     if (path && path.length) {
       set(newNode, 'humanPath', path.join(get(this, 'defaultDelimiter')));

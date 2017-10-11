@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
+import Component from '@ember/component';
 import layout from '../templates/components/grouped-selections';
-const { get, Component } = Ember;
 
 export default Component.extend({
   layout,

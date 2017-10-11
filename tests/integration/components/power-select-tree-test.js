@@ -1,9 +1,8 @@
+import { set } from '@ember/object';
 import { moduleForComponent, test } from 'ember-qunit';
 import { clickTrigger } from '../../helpers/ember-power-select';
+import $ from 'jquery';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
-
-const { set } = Ember;
 const clickEPSTreeTrigger = () => clickTrigger('.ember-power-select-tree');
 const getOptionNode = s => $(`.ember-power-select-tree-leaf:contains(${s})`);
 const getGroupNode = s => $(`.ember-power-select-group:contains(${s})`);
