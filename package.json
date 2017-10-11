@@ -1,6 +1,6 @@
 {
   "name": "ember-power-select-tree",
-  "version": "0.0.32",
+  "version": "0.1.0",
   "description": "Browsable tree add-on for ember-power-select",
   "keywords": [
     "ember-addon",
