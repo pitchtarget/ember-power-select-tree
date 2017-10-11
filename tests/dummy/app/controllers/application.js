@@ -1,5 +1,5 @@
-import Ember from 'ember';
-const { get, set, Controller } = Ember;
+import { set, get } from '@ember/object';
+import Controller from '@ember/controller';
 
 export default Controller.extend({
   selectedOptions: [{
