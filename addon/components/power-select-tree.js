@@ -217,11 +217,13 @@ export default Component.extend({
       );
       this._treeTraverse(nodeOrLeaf, o => set(o, 'isChecked', false));
       if (isNode) { // unchecks the group itself
-        set(
-          this._findInternalNode(
-            {options: get(this, 'currentOptions')},
-            get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'humanPath')), 'isChecked', false
+        const internalNode = this._findInternalNode(
+          {options: get(this, 'currentOptions')},
+          get(nodeOrLeaf, 'nodeName') || get(nodeOrLeaf, 'humanPath')
         );
+        if (internalNode) {
+          set(internalNode, 'isChecked', false);
+        }
       }
       set(this, '__selectedOptions', __selectedOptions);
       this.onTreeSelectionChange(__selectedOptions);
